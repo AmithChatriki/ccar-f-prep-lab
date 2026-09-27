@@ -2,9 +2,9 @@
 
 - Exam: Claude Certified Architect – Foundations (CCAR-F)
 - Target exam date: (not set)
-- Last updated: (not yet)
-- Current day: Day 1
-- Days completed: 0 / 10
+- Last updated: 2026-09-27
+- Current day: Day 2
+- Days completed: 1 / 10
 
 ## Status key
 - Days: Not started | In progress | Done | Needs review
@@ -16,7 +16,7 @@
 
 | Day | Focus | Status | Mastery check | Quiz score | Completed on |
 |---|---|---|---|---|---|
-| 1 | Baseline and agentic loop | Not started | - | - | - |
+| 1 | Baseline and agentic loop | Done | Passed (MCQ format) | 3/3 | 2026-09-27 |
 | 2 | Multi-agent orchestration | Not started | - | - | - |
 | 3 | Enforcement, hooks, and sessions | Not started | - | - | - |
 | 4 | Tool design and MCP | Not started | - | - | - |
@@ -31,7 +31,7 @@
 
 | TS | Topic | Day | Status |
 |---|---|---|---|
-| 1.1 | Agentic loops and stop_reason | 1 | Not started |
+| 1.1 | Agentic loops and stop_reason | 1 | Solid |
 | 1.2 | Coordinator-subagent orchestration | 2 | Not started |
 | 1.3 | Subagent invocation and context passing | 2 | Not started |
 | 1.4 | Workflow enforcement and handoff | 3 | Not started |
@@ -66,7 +66,7 @@
 
 | Exercise | Built on | Status | Notes |
 |---|---|---|---|
-| Raw API agentic loop | Day 1 | Not started | - |
+| Raw API agentic loop | Day 1 | Done | Ran correct_loop.py plus all 3 anti-pattern variants; observed text+tool_use coexistence, iteration cap truncation, text-marker false negative, text-presence false positive |
 | Ex 4: Multi-agent research pipeline | Days 2, 9 | Not started | - |
 | Hooks, gates, and sessions | Day 3 | Not started | - |
 | Ex 1: Support agent with escalation | Days 4, 5, 9 | Not started | - |
@@ -89,20 +89,21 @@
 ## Weak spots
 (Claude adds entries here as: TS number, what went wrong, what to revisit. Resolved entries are marked resolved, not deleted.)
 
-- None yet
+- None yet — domain-level signal only so far (D5, D1, D3 below D4/D2 on the quick mock). Will pin to specific task statements as they surface on Days 2, 3, 6, 9.
 
 ## Quiz and practice log
 
 | Date | Topic | Score | Missed TS |
 |---|---|---|---|
-| - | - | - | - |
+| 2026-09-27 | TS 1.1 (agentic loop, stop_reason, anti-patterns, model-driven vs. decision trees) | 3/3 | None |
 
 ## Diagnostic and mock exam results
 
 | Date | Test | Score | Weakest domains |
 |---|---|---|---|
-| - | Diagnostic test | - | - |
+| 2026-09-26 | Quick mock (28 Q, claudecertificationguide.com) | 747/1000, 21/28 (75%), passed | D5 (60%), D1 and D3 tied (67% each) |
 | - | Full mock exam | - | - |
 
 ## Notes
-- None yet
+- Formal diagnostic test skipped by decision; quick mock domain breakdown adopted as baseline instead.
+- Day 1 mastery check redone in MCQ format after initial free-response drilling was flagged as not reflecting real exam format (see recent memory update). All future mastery checks and quizzes use MCQ/multi-select format matching the actual exam.
