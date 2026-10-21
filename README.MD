@@ -56,9 +56,3 @@ word limit in the subagent definition was overridden by the delegation prompt.
 - Pick the proportionate fix for the root cause before adding infrastructure.
 - Subagents inherit no context: pass what they need explicitly and in structured form.
 - Route inter-agent communication through the coordinator for observability.
-
-## Notes
-
-- The Claude Code CLI I run reports the subagent spawn tool as `Agent`; the exam
-  guide and SDK docs call it `Task`.
-- `.env` and the exam guide PDF are intentionally not committed.
