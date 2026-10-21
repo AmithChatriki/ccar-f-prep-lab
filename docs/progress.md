@@ -2,9 +2,9 @@
 
 - Exam: Claude Certified Architect – Foundations (CCAR-F)
 - Target exam date: (not set)
-- Last updated: 2026-09-27
-- Current day: Day 2
-- Days completed: 1 / 10
+- Last updated: 2026-10-21
+- Current day: Day 3
+- Days completed: 2 / 10
 
 ## Status key
 - Days: Not started | In progress | Done | Needs review
@@ -17,7 +17,7 @@
 | Day | Focus | Status | Mastery check | Quiz score | Completed on |
 |---|---|---|---|---|---|
 | 1 | Baseline and agentic loop | Done | Passed (MCQ format) | 3/3 | 2026-09-27 |
-| 2 | Multi-agent orchestration | Not started | - | - | - |
+| 2 | Multi-agent orchestration | Done | Partial (missed refinement loop option on a select-2 question; re-check on that concept passed 2026-10-21) | 3/3 | 2026-10-21 |
 | 3 | Enforcement, hooks, and sessions | Not started | - | - | - |
 | 4 | Tool design and MCP | Not started | - | - | - |
 | 5 | Built-in tools and escalation | Not started | - | - | - |
@@ -32,11 +32,11 @@
 | TS | Topic | Day | Status |
 |---|---|---|---|
 | 1.1 | Agentic loops and stop_reason | 1 | Solid |
-| 1.2 | Coordinator-subagent orchestration | 2 | Not started |
-| 1.3 | Subagent invocation and context passing | 2 | Not started |
+| 1.2 | Coordinator-subagent orchestration | 2 | Solid |
+| 1.3 | Subagent invocation and context passing | 2 | Solid |
 | 1.4 | Workflow enforcement and handoff | 3 | Not started |
 | 1.5 | Agent SDK hooks | 3 | Not started |
-| 1.6 | Task decomposition strategies | 2 | Not started |
+| 1.6 | Task decomposition strategies | 2 | Solid |
 | 1.7 | Session resume and fork | 3 | Not started |
 | 2.1 | Tool interface design | 4 | Not started |
 | 2.2 | Structured MCP error responses | 4 | Not started |
@@ -67,7 +67,7 @@
 | Exercise | Built on | Status | Notes |
 |---|---|---|---|
 | Raw API agentic loop | Day 1 | Done | Ran correct_loop.py plus all 3 anti-pattern variants; observed text+tool_use coexistence, iteration cap truncation, text-marker false negative, text-presence false positive |
-| Ex 4: Multi-agent research pipeline | Days 2, 9 | Not started | - |
+| Ex 4: Multi-agent research pipeline | Days 2, 9 | In progress | Day 2 part done on local docs only (cost-conscious): coordinator plus doc_analysis_agent and synthesis_agent via AgentDefinition; observed 4 independent delegations emitted together then dependent synthesis call; explicit context passing; structured claim/source JSON (source_name field ambiguity caused filename vs document-source mismatch); subagent word cap not honored when delegation prompt asked for more. Not built: refinement loop, chain vs dynamic comparison, error propagation, conflict handling (Day 9) |
 | Hooks, gates, and sessions | Day 3 | Not started | - |
 | Ex 1: Support agent with escalation | Days 4, 5, 9 | Not started | - |
 | Ex 2: Claude Code team configuration | Day 6 | Not started | - |
@@ -83,19 +83,22 @@
 | Human oversight | 5, 9 | Not started |
 | Handling secrets | 6 | Not started |
 | Configuration scope | 6 | Not started |
-| Auditability and traceability | 2, 7, 9 | Not started |
+| Auditability and traceability | 2, 7, 9 | In progress (Day 2 covered: coordinator routing as the single observation point) |
 | Quality assurance | 9 | Not started |
 
 ## Weak spots
 (Claude adds entries here as: TS number, what went wrong, what to revisit. Resolved entries are marked resolved, not deleted.)
 
 - None yet — domain-level signal only so far (D5, D1, D3 below D4/D2 on the quick mock). Will pin to specific task statements as they surface on Days 2, 3, 6, 9.
+- TS 1.2 (2026-10-21, resolved 2026-10-21): On a select-2 question about narrow decomposition, chose only the upstream decomposition fix and missed the iterative refinement loop (coordinator evaluates synthesis for gaps, re-delegates targeted queries, re-invokes synthesis until coverage is sufficient). User reported knowing the refinement option was correct but not noticing the select-2 count; re-check question on the refinement loop answered correctly (A and B). Habit to keep: find the "select N" count before reading the options.
 
 ## Quiz and practice log
 
 | Date | Topic | Score | Missed TS |
 |---|---|---|---|
 | 2026-09-27 | TS 1.1 (agentic loop, stop_reason, anti-patterns, model-driven vs. decision trees) | 3/3 | None |
+| 2026-10-21 | Day 2 completion: TS 1.2, 1.3, 1.6 (3 mastery checks, 3 scenario questions, plus 2 mid-lesson checks 2/2) | Scenario 3/3; mastery 2 full + 1 partial | 1.2 |
+| 2026-10-21 | TS 1.2 re-check (iterative refinement loop, select-2) | 1/1 | None |
 
 ## Diagnostic and mock exam results
 
@@ -107,3 +110,5 @@
 ## Notes
 - Formal diagnostic test skipped by decision; quick mock domain breakdown adopted as baseline instead.
 - Day 1 mastery check redone in MCQ format after initial free-response drilling was flagged as not reflecting real exam format (see recent memory update). All future mastery checks and quizzes use MCQ/multi-select format matching the actual exam.
+- Hands-on tasks are kept short and low-cost (API spend is capped); prefer local-only builds and cheaper models for build days, and cover judgment-only topics with questions instead of paid runs.
+- The installed Claude Code CLI reports the subagent spawn tool as "Agent"; the exam guide and SDK docs call it "Task". Use "Task" for exam answers.
