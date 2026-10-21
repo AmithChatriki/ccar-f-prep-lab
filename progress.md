@@ -18,7 +18,7 @@
 |---|---|---|---|---|---|
 | 1 | Baseline and agentic loop | Done | Passed (MCQ format) | 3/3 | 2026-09-27 |
 | 2 | Multi-agent orchestration | Done | Partial (missed refinement loop option on a select-2 question; re-check on that concept passed 2026-10-21) | 3/3 | 2026-10-21 |
-| 3 | Enforcement, hooks, and sessions | Not started | - | - | - |
+| 3 | Enforcement, hooks, and sessions | In progress | - | - | - |
 | 4 | Tool design and MCP | Not started | - | - | - |
 | 5 | Built-in tools and escalation | Not started | - | - | - |
 | 6 | Claude Code configuration | Not started | - | - | - |
