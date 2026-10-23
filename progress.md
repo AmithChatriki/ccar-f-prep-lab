@@ -2,7 +2,7 @@
 
 - Exam: Claude Certified Architect – Foundations (CCAR-F)
 - Target exam date: (not set)
-- Last updated: 2026-10-22
+- Last updated: 2026-10-23
 - Current day: Day 4
 - Days completed: 3 / 10
 
@@ -19,7 +19,7 @@
 | 1 | Baseline and agentic loop | Done | Passed (MCQ format) | 3/3 | 2026-09-27 |
 | 2 | Multi-agent orchestration | Done | Partial (missed refinement loop option on a select-2 question; re-check on that concept passed 2026-10-21) | 3/3 | 2026-10-21 |
 | 3 | Enforcement, hooks, and sessions | Done | Passed (MCQ format, 5/5) | 3/3 | 2026-10-22 |
-| 4 | Tool design and MCP | Not started | - | - | - |
+| 4 | Tool design and MCP | In progress | - | - | - |
 | 5 | Built-in tools and escalation | Not started | - | - | - |
 | 6 | Claude Code configuration | Not started | - | - | - |
 | 7 | CI/CD and review architectures | Not started | - | - | - |
