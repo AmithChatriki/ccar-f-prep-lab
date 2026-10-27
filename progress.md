@@ -20,7 +20,7 @@
 | 2 | Multi-agent orchestration | Done | Partial (missed refinement loop option on a select-2 question; re-check on that concept passed 2026-10-21) | 3/3 | 2026-10-21 |
 | 3 | Enforcement, hooks, and sessions | Done | Passed (MCQ format, 5/5) | 3/3 | 2026-10-22 |
 | 4 | Tool design and MCP | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-10-27 |
-| 5 | Built-in tools and escalation | Not started | - | - | - |
+| 5 | Built-in tools and escalation | In progress | - | - | - |
 | 6 | Claude Code configuration | Not started | - | - | - |
 | 7 | CI/CD and review architectures | Not started | - | - | - |
 | 8 | Structured output and extraction | Not started | - | - | - |
