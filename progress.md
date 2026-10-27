@@ -3,8 +3,8 @@
 - Exam: Claude Certified Architect – Foundations (CCAR-F)
 - Target exam date: (not set)
 - Last updated: 2026-10-27
-- Current day: Day 5
-- Days completed: 4 / 10
+- Current day: Day 6
+- Days completed: 5 / 10
 
 ## Status key
 - Days: Not started | In progress | Done | Needs review
@@ -20,7 +20,7 @@
 | 2 | Multi-agent orchestration | Done | Partial (missed refinement loop option on a select-2 question; re-check on that concept passed 2026-10-21) | 3/3 | 2026-10-21 |
 | 3 | Enforcement, hooks, and sessions | Done | Passed (MCQ format, 5/5) | 3/3 | 2026-10-22 |
 | 4 | Tool design and MCP | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-10-27 |
-| 5 | Built-in tools and escalation | In progress | - | - | - |
+| 5 | Built-in tools and escalation | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-10-27 |
 | 6 | Claude Code configuration | Not started | - | - | - |
 | 7 | CI/CD and review architectures | Not started | - | - | - |
 | 8 | Structured output and extraction | Not started | - | - | - |
@@ -42,7 +42,7 @@
 | 2.2 | Structured MCP error responses | 4 | Solid |
 | 2.3 | Tool distribution and tool_choice | 4 | Solid |
 | 2.4 | MCP server integration and scoping | 4, 6 | Solid |
-| 2.5 | Built-in tools (Read, Write, Edit, Bash, Grep, Glob) | 5 | Not started |
+| 2.5 | Built-in tools (Read, Write, Edit, Bash, Grep, Glob) | 5 | Solid |
 | 3.1 | CLAUDE.md hierarchy and @import | 6 | Not started |
 | 3.2 | Slash commands and skills | 6 | Not started |
 | 3.3 | Path-specific rules | 6 | Not started |
@@ -56,7 +56,7 @@
 | 4.5 | Message Batches API strategy | 8 | Not started |
 | 4.6 | Multi-instance and multi-pass review | 7 | Not started |
 | 5.1 | Preserving context in long interactions | 9 | Not started |
-| 5.2 | Escalation and ambiguity resolution | 5 | Not started |
+| 5.2 | Escalation and ambiguity resolution | 5 | Solid |
 | 5.3 | Error propagation across agents | 9 | Not started |
 | 5.4 | Context in large codebase exploration | 9 | Not started |
 | 5.5 | Human review and confidence calibration | 9 | Not started |
@@ -69,7 +69,7 @@
 | Raw API agentic loop | Day 1 | Done | Ran correct_loop.py plus all 3 anti-pattern variants; observed text+tool_use coexistence, iteration cap truncation, text-marker false negative, text-presence false positive |
 | Ex 4: Multi-agent research pipeline | Days 2, 9 | In progress | Day 2 part done on local docs only (cost-conscious): coordinator plus doc_analysis_agent and synthesis_agent via AgentDefinition; observed 4 independent delegations emitted together then dependent synthesis call; explicit context passing; structured claim/source JSON (source_name field ambiguity caused filename vs document-source mismatch); subagent word cap not honored when delegation prompt asked for more. Not built: refinement loop, chain vs dynamic comparison, error propagation, conflict handling (Day 9) |
 | Hooks, gates, and sessions | Day 3 | Done | Local unit tests: prerequisite gate (multiple matches do not verify), $500 interception boundary (499/500/501), normalizer (epoch/ISO, status codes, unknown code preserved), handoff builder rejecting missing fields. Live Agent SDK run (Haiku, about $0.04): PreToolUse deny on a $750 refund overrode a system prompt saying any amount is allowed; model then escalated with all four handoff fields; no PostToolUse event for the denied call; tool_response arrived as a list. Sessions via claude -p: -n naming, duplicate name forced resume by session ID, stale resume answered 500 when file was 300, resume-and-inform corrected to 300 and flagged cross-file mismatch, --fork-session produced two independent branches with no leakage. Gaps: verification gate never fired live (model verified on its own); live PostToolUse normalization with updatedToolOutput not built; final customer message falsely said refund was processed with a 1-2 day timeline |
-| Ex 1: Support agent with escalation | Days 4, 5, 9 | In progress | Day 4 build skipped by decision (user already has hands-on MCP experience): local MCP server with four tools, structured error tests, minimal vs detailed description comparison, tool_choice experiments, and resource catalog not built. Resource catalog covered with a worked example in chat only. Remaining: escalation criteria and built-ins (Day 5), context handling (Day 9) |
+| Ex 1: Support agent with escalation | Days 4, 5, 9 | In progress | Day 4 build skipped by decision (user already has hands-on MCP experience): local MCP server with four tools, structured error tests, minimal vs detailed description comparison, tool_choice experiments, and resource catalog not built. Resource catalog covered with a worked example in chat only. Day 5 build skipped by decision (cost cap; Day 4 MCP server never built): escalation criteria with few-shot prompt, five escalation test cases, and the Grep/Glob/Read/Edit-failure repo exercise not built; TS 2.5 and TS 5.2 taught in chat with 4 mid-lesson checks (4/4) and covered by exam-style questions instead. Remaining: context handling (Day 9) |
 | Ex 2: Claude Code team configuration | Day 6 | Not started | - |
 | CI review pipeline | Day 7 | Not started | - |
 | Ex 3: Structured extraction pipeline | Days 8, 9 | Not started | - |
@@ -79,8 +79,8 @@
 | Governance idea | Day | Status |
 |---|---|---|
 | Enforcing policy | 3 | Done (Day 3: prerequisite gate and PreToolUse refund limit enforced in code, verified live over a contradicting prompt) |
-| Least privilege | 4, 6 | In progress (Day 4 covered: scoped subagent toolsets, constrained tools such as load_document, scoped verify_fact, user-scoped experimental MCP servers; Day 6 to add skill allowed-tools) |
-| Human oversight | 5, 9 | Not started |
+| Least privilege | 4, 6 | In progress (Day 4 covered: scoped subagent toolsets, constrained tools such as load_document, scoped verify_fact, user-scoped experimental MCP servers; Day 5 touched: Bash as the broadest built-in, Write vs Edit blast radius; Day 6 to add skill allowed-tools) |
+| Human oversight | 5, 9 | In progress (Day 5 covered: explicit escalation criteria with few-shot examples, honoring explicit requests for a human, policy gaps as triggers, structured handoff for agents without transcript access, clarification over heuristic selection; Day 9 to add confidence-based routing to human review) |
 | Handling secrets | 6 | Not started |
 | Configuration scope | 6 | Not started |
 | Auditability and traceability | 2, 7, 9 | In progress (Day 2 covered: coordinator routing as the single observation point; Day 3 touched: hook logging of allowed and denied attempts; Day 4 touched: categorized structured errors as an audit record) |
@@ -101,6 +101,7 @@
 | 2026-10-21 | TS 1.2 re-check (iterative refinement loop, select-2) | 1/1 | None |
 | 2026-10-22 | Day 3 completion: TS 1.4, 1.5, 1.7 (5 mastery checks, 3 scenario questions, plus 6 mid-lesson checks 6/6) | Scenario 3/3; mastery 5/5 | None |
 | 2026-10-27 | Day 4 completion: TS 2.1, 2.2, 2.3, 2.4 (4 mastery checks, 3 scenario questions, plus 5 mid-lesson checks 5/5) | Scenario 3/3; mastery 4/4 | None |
+| 2026-10-27 | Day 5 completion: TS 2.5, 5.2 (4 mastery checks, 3 scenario questions including the TS 1.4 multi-issue carryover, plus 4 mid-lesson checks 4/4) | Scenario 3/3; mastery 4/4 | None |
 
 ## Diagnostic and mock exam results
 
@@ -118,3 +119,4 @@
 - Spelling differences to remember: the CLI flag is --fork-session while the guide and SDK use fork_session; the interception hook event is PreToolUse (the guide describes it without naming the event).
 - Shell setup: load the project-root .env with set -a; source .env; set +a (values are quoted, so cut leaves literal quotes and causes an invalid API key error).
 - Day 4: the user skipped the build by choice (prior hands-on MCP experience); judgment content was covered through questions instead. MCP resources (catalog vs tool, resources/list and resources/read, @ mentions in Claude Code) were explained with a worked example.
+- Day 5: the user skipped the build by choice; TS 2.5 and TS 5.2 were taught in chat (wrapper tracing, Edit failure fallback to Read plus Write, escalation triggers, policy gaps, multiple matches). The multi-issue message case (TS 1.4 carryover, not taught on Day 5) was covered in scenario question 1 and answered correctly. The select-N counting habit held on all select-2 questions.
