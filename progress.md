@@ -22,7 +22,7 @@
 | 4 | Tool design and MCP | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-10-27 |
 | 5 | Built-in tools and escalation | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-10-27 |
 | 6 | Claude Code configuration | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-10-29 |
-| 7 | CI/CD and review architectures | Not started | - | - | - |
+| 7 | CI/CD and review architectures | In progress | - | - | - |
 | 8 | Structured output and extraction | Not started | - | - | - |
 | 9 | Context management and reliability | Not started | - | - | - |
 | 10 | Mock exam and consolidation | Not started | - | - | - |
