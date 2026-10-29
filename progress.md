@@ -2,7 +2,7 @@
 
 - Exam: Claude Certified Architect – Foundations (CCAR-F)
 - Target exam date: (not set)
-- Last updated: 2026-10-27
+- Last updated: 2026-10-29
 - Current day: Day 6
 - Days completed: 5 / 10
 
@@ -21,7 +21,7 @@
 | 3 | Enforcement, hooks, and sessions | Done | Passed (MCQ format, 5/5) | 3/3 | 2026-10-22 |
 | 4 | Tool design and MCP | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-10-27 |
 | 5 | Built-in tools and escalation | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-10-27 |
-| 6 | Claude Code configuration | Not started | - | - | - |
+| 6 | Claude Code configuration | In progress | - | - | - |
 | 7 | CI/CD and review architectures | Not started | - | - | - |
 | 8 | Structured output and extraction | Not started | - | - | - |
 | 9 | Context management and reliability | Not started | - | - | - |
