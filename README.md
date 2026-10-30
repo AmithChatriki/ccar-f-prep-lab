@@ -18,6 +18,7 @@ demonstrates the concept, including the anti-patterns the exam tests.
 | (none) | Day 4: tool design and MCP (concepts only) | 2.1 to 2.4 |
 | (none) | Day 5: built-in tools and escalation (concepts only) | 2.5, 5.2 |
 | (none) | Day 6: Claude Code configuration (concepts only) | 3.1 to 3.4 |
+| (none) | Day 7: CI/CD and review architectures (concepts only) | 3.5, 3.6, 4.1, 4.6 |
 
 Later days will be added as I complete them.
 
@@ -55,9 +56,12 @@ delegation prompt overriding a subagent's word limit.
   live, and the final customer message wrongly said the blocked refund was processed.
   Enforcement in code does not guarantee the model's wording.
 
-**Days 4 to 6.** Concepts only, no lab built (API spend is capped). Day 6 notes: the
+**Days 4 to 7.** Concepts only, no lab built (API spend is capped). Day 6 notes: the
 exact frontmatter format for `paths`, `allowed-tools`, and skill keys should be checked
-against current Claude Code docs before use in a real repo.
+against current Claude Code docs before use in a real repo. Day 7 notes: the CI review
+pipeline (`claude -p` with `--output-format json` and `--json-schema`) was not built; the
+`--json-schema` value format (inline vs file) and where the schema-conforming result sits
+in the JSON output should be checked against current CLI docs before scripting against it.
 
 ## Design patterns I keep applying
 
@@ -79,3 +83,17 @@ against current Claude Code docs before use in a real repo.
 - Escalate on explicit requests, policy gaps, or no progress, not on sentiment or
   self-reported confidence. Multiple customer matches mean asking for another identifier.
 - Plan mode for decisions and large surfaces; direct execution for well-scoped changes.
+- In CI, run `claude -p` (non-interactive) and pair `--output-format json` with
+  `--json-schema`: the envelope alone is valid JSON around prose, the schema is what makes
+  findings machine-parseable. Project context for CI runs comes from CLAUDE.md.
+- On re-review, pass prior findings in explicitly and report only new or unaddressed
+  issues; for test generation, put existing tests in context to avoid duplicates.
+- Reduce false positives with explicit categorical criteria and concrete severity
+  examples, not "be conservative" or confidence thresholds. Disable a noisy category
+  temporarily while rewriting it, since it erodes trust in the accurate ones.
+- Review with an independent instance, not the session that generated the code. Split
+  large reviews into per-file passes plus a cross-file integration pass; a larger context
+  window or majority voting across repeated passes does not fix attention dilution.
+- Fix inconsistent prose interpretation with 2-3 concrete input/output examples or
+  test-first iteration; use the interview pattern for unfamiliar domains; send interacting
+  issues in one message and independent issues sequentially.
