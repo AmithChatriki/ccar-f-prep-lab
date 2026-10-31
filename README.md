@@ -20,6 +20,7 @@ demonstrates the concept, including the anti-patterns the exam tests.
 | (none) | Day 6: Claude Code configuration (concepts only) | 3.1 to 3.4 |
 | (none) | Day 7: CI/CD and review architectures (concepts only) | 3.5, 3.6, 4.1, 4.6 |
 | (none) | Day 8: structured output and extraction (concepts only so far) | 4.2 to 4.5 |
+| (none) | Day 9: context management and reliability (concepts only) | 5.1, 5.3 to 5.6 |
 
 Later days will be added as I complete them.
 
@@ -72,6 +73,17 @@ validation-retry with specific error feedback, `calculated_total` vs `stated_tot
 (`custom_id`, chunked resubmission, SLA arithmetic). Notes: check the current API docs
 for the exact `tool_choice` request shape, the strict tool use setting, and the Message
 Batches request and result format before scripting against them.
+
+**Day 9.** Concepts only, no lab built (API spend is capped). Not built: the case-facts
+block and trimmed order lookups for the support agent, the research pipeline remainder
+(structured error propagation from a simulated subagent timeout, conflict annotation with
+dates, claim-source mappings, coverage-gap notes, crash-recovery manifest), a scratchpad
+and `/compact` exploration session, and the extraction pipeline's field-level confidence,
+calibrated routing, accuracy by document type and field, and stratified sampling. Worked
+through in notes and questions: progressive summarization loss, lost-in-the-middle
+placement, structured error context vs generic status, valid empty results vs access
+failures, claim-source mappings with publication dates, and why aggregate accuracy can
+mislead.
 
 ## Design patterns I keep applying
 
@@ -126,3 +138,25 @@ Batches request and result format before scripting against them.
   cause, and refine the prompt on a sample before the full run.
 - An aggregate pass rate can hide a failing document type or field; measure accuracy by
   segment before reducing human review.
+- Facts that must survive a long session (amounts, dates, order IDs, statuses) live in a
+  persistent case-facts block outside summarized history, not in a summarizer instruction.
+  Trim tool output to the relevant fields before it enters context. A larger context
+  window does not fix summarization loss, position effects, or exploration degradation.
+- Put key findings at the start of aggregated input under explicit section headers, and
+  have upstream agents return structured data (facts, citations, dates, locations) rather
+  than verbose prose when a downstream agent has a limited context budget.
+- Subagents recover locally from transient failures, then propagate structured error
+  context (failure type, attempted query, partial results, alternatives). The coordinator
+  proceeds with partial results and annotates coverage gaps. Silent suppression, generic
+  status, and whole-workflow termination are all anti-patterns; a clean zero-match query
+  is a valid empty result, not a failure.
+- Preserve claim-source mappings with publication or collection dates through synthesis.
+  Annotate conflicting values with their sources instead of selecting, averaging, or
+  dropping one, and separate well-established findings from contested ones.
+- Counter exploration degradation with scratchpad files, subagent delegation for verbose
+  discovery, phase summaries injected into the next phase, `/compact`, and manifests of
+  exported agent state for crash recovery.
+- Calibrate before automating: field-level confidence thresholds checked against a labeled
+  validation set, accuracy by document type and field, and ongoing stratified random
+  sampling of high-confidence extractions to catch novel errors. Uncalibrated or
+  document-level confidence and same-session self-review are not grounds to skip review.
