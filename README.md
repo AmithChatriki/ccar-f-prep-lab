@@ -8,6 +8,12 @@ demonstrates the concept, including the anti-patterns the exam tests.
 > It contains no exam questions or exam content. Scripts are learning exercises,
 > not production code.
 
+## Status
+
+Foundations preparation is closed: all 10 days are recorded, with Day 10 closed by my own
+decision rather than by completing every planned step. The official CCAR-F exam has not
+been taken. Next target: the Claude Certified Architect – Professional (CCAR-P) exam.
+
 ## Structure
 
 | Folder | Focus | Task statements |
@@ -21,8 +27,9 @@ demonstrates the concept, including the anti-patterns the exam tests.
 | (none) | Day 7: CI/CD and review architectures (concepts only) | 3.5, 3.6, 4.1, 4.6 |
 | (none) | Day 8: structured output and extraction (concepts only so far) | 4.2 to 4.5 |
 | (none) | Day 9: context management and reliability (concepts only) | 5.1, 5.3 to 5.6 |
+| (none) | Day 10: mock exam and consolidation (closed by decision) | all |
 
-Later days will be added as I complete them.
+Foundations preparation is closed, so no further days will be added.
 
 ## Setup
 
@@ -84,6 +91,13 @@ through in notes and questions: progressive summarization loss, lost-in-the-midd
 placement, structured error context vs generic status, valid empty results vs access
 failures, claim-source mappings with publication dates, and why aggregate accuracy can
 mislead.
+
+**Day 10.** No lab built. One full timed mock exam from an unofficial third-party source
+was completed in a single sitting without notes, and it produced no misses to classify.
+Closed by my own decision: the 30-task-statement one-or-two-sentence self-check, a second
+full mock from a different source, and the drill of weakest domains were skipped. The
+official CCAR-F exam has not been taken. Mock exams from third parties are unofficial and
+their scores are not comparable to the official scaled score.
 
 ## Design patterns I keep applying
 

@@ -4,7 +4,7 @@
 - Target exam date: (not set)
 - Last updated: 2026-10-31
 - Current day: Day 10
-- Days completed: 9 / 10
+- Days completed: 10 / 10
 
 ## Status key
 - Days: Not started | In progress | Done | Needs review
@@ -25,7 +25,7 @@
 | 7 | CI/CD and review architectures | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-10-30 |
 | 8 | Structured output and extraction | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-10-31 |
 | 9 | Context management and reliability | Done | Passed (MCQ format, 5/5) | 3/3 | 2026-10-31 |
-| 10 | Mock exam and consolidation | Not started | - | - | - |
+| 10 | Mock exam and consolidation | Done (closed by user decision) | Closed by user decision: 30-task-statement check and second mock (claudecertprep.com) skipped; one full mock completed (szymonpaluch.com, 60/60) | Mock 60/60 | 2026-10-31 |
 
 ## Task statement coverage
 
@@ -89,7 +89,7 @@
 ## Weak spots
 (Claude adds entries here as: TS number, what went wrong, what to revisit. Resolved entries are marked resolved, not deleted.)
 
-- None yet — domain-level signal only so far (D5, D1, D3 below D4/D2 on the quick mock). Will pin to specific task statements as they surface on Days 2, 3, 6, 9. Days 6, 7, and 8 produced no misses on D3 task statements 3.1 to 3.6 or on TS 4.1 to 4.6. Day 9 produced no misses on D5 task statements 5.1, 5.3, 5.4, 5.5, 5.6 (5/5 mid-lesson, 5/5 mastery, 3/3 scenario, including five select-2 questions with the count caught every time).
+- None yet — domain-level signal only so far (D5, D1, D3 below D4/D2 on the quick mock). Will pin to specific task statements as they surface on Days 2, 3, 6, 9. Days 6, 7, and 8 produced no misses on D3 task statements 3.1 to 3.6 or on TS 4.1 to 4.6. Day 9 produced no misses on D5 task statements 5.1, 5.3, 5.4, 5.5, 5.6 (5/5 mid-lesson, 5/5 mastery, 3/3 scenario, including five select-2 questions with the count caught every time). The Day 10 full mock (2026-10-31, szymonpaluch.com) produced zero misses in every domain (D1 16/16, D2 11/11, D3 12/12, D4 12/12, D5 9/9), so it gave no new weak-spot signal and the quick-mock D5/D1/D3 gap shows no residual on that bank; one question bank only, so a second full mock from a different source is still the better confirmation.
 - TS 1.2 (2026-10-21, resolved 2026-10-21): On a select-2 question about narrow decomposition, chose only the upstream decomposition fix and missed the iterative refinement loop (coordinator evaluates synthesis for gaps, re-delegates targeted queries, re-invokes synthesis until coverage is sufficient). User reported knowing the refinement option was correct but not noticing the select-2 count; re-check question on the refinement loop answered correctly (A and B). Habit to keep: find the "select N" count before reading the options.
 
 ## Quiz and practice log
@@ -106,13 +106,14 @@
 | 2026-10-30 | Day 7 completion: TS 3.5, 3.6, 4.1, 4.6 (4 mastery checks, 3 scenario questions, plus 4 mid-lesson checks 4/4) | Scenario 3/3; mastery 4/4 | None |
 | 2026-10-31 | Day 8 completion: TS 4.2, 4.3, 4.4, 4.5 (4 mastery checks, 3 scenario questions, plus 4 mid-lesson checks 4/4) | Scenario 3/3; mastery 4/4 | None |
 | 2026-10-31 | Day 9 completion: TS 5.1, 5.3, 5.4, 5.5, 5.6 (5 mastery checks, 3 scenario questions, plus 5 mid-lesson checks 5/5) | Scenario 3/3; mastery 5/5 | None |
+| 2026-10-31 | Day 10 full mock exam (szymonpaluch.com, exam mode; user-reported, one sitting, no notes or outside help) | 60/60 (100%), 1000 scaled; D1 16/16, D2 11/11, D3 12/12, D4 12/12, D5 9/9 | None |
 
 ## Diagnostic and mock exam results
 
 | Date | Test | Score | Weakest domains |
 |---|---|---|---|
 | 2026-09-26 | Quick mock (28 Q, claudecertificationguide.com) | 747/1000, 21/28 (75%), passed | D5 (60%), D1 and D3 tied (67% each) |
-| - | Full mock exam | - | - |
+| 2026-10-31 | Full mock exam (szymonpaluch.com, unofficial, exam mode; 60 Q, about 36 minutes of 120; one sitting, no notes or copying, user-reported; screenshots of score and domain breakdown) | 1000/1000, 60/60 (100%), passed; D1 16/16, D2 11/11, D3 12/12, D4 12/12, D5 9/9 | None (all domains 100%) |
 
 ## Notes
 - Formal diagnostic test skipped by decision; quick mock domain breakdown adopted as baseline instead.
@@ -128,3 +129,6 @@
 - Day 7: taught in chat (TS 3.6, 4.1, 4.6, 3.5, one topic at a time with a mid-lesson check each, 4/4). The user asked for worked examples of --output-format json with --json-schema, of --output-format json without --json-schema (valid JSON envelope with a prose payload, so findings still need the schema), and of per-file plus cross-file integration passes. The select-N counting habit held on all select-2 questions. --json-schema value format and envelope layout not verified against current docs; verify before real use.
 - Day 8: taught in chat (TS 4.3, 4.4, 4.2, 4.5, one topic at a time with a mid-lesson check each, 4/4). The user asked what an SLA is and for a simple custom_id audit example; both were explained with worked examples (30-hour SLA with 24-hour batches: interval <= SLA - 24, so 4 hours gives 28-hour worst case; custom_id trail with chunked resubmission). The select-N counting habit held on all select-2 questions. Recurring Day 8 patterns: schema validity is not correctness; retry works only when the information is present in the source; systematic misses on an input shape call for 2 to 4 targeted few-shot examples; batch fits only latency-tolerant work and cannot do multi-turn tool calling; aggregate pass rates can hide failing document types and fields. Day 8 build not reported at completion. The tool_choice request shape (guide shows bare "auto" and "any" strings), strict tool use setting, and Message Batches request/result format not verified against current docs; verify before real use.
 - Day 9: taught in chat (TS 5.1, 5.3, 5.6, 5.4, 5.5, one topic at a time with a mid-lesson check each, 5/5). Builds not reported; recorded as skipped by decision after stating this at the start of the completion protocol with no objection. Recurring Day 9 patterns: facts that must survive go in a case-facts block outside summarized history, not into a summarizer instruction; trim tool output to relevant fields before it enters context; larger context windows do not fix omission, position effects, or degradation; subagents propagate structured error context (failure type, attempted query, partial results, alternatives) and coordinators annotate coverage gaps, never silent suppression or whole-workflow termination; a clean zero-match query is a valid empty result, not a failure; conflicting values are annotated with source and date, never selected, averaged, or dropped; scratchpad files, subagent delegation, and manifests counter exploration degradation; 97% aggregate accuracy can hide failing segments, so measure by document type and field, calibrate field-level confidence on a labeled set, and keep stratified sampling of high-confidence extractions. Day 10 is the full timed mock exam (120 minutes, no notes) plus consolidation; classify every miss against the recurring answer patterns and drill the two weakest domains.
+- Day 10 (2026-10-31): user reported a full mock of 1000/1000 (60/60) in about 36 minutes on szymonpaluch.com (unofficial, not Anthropic; domain breakdown screenshot shows 100% in D1 to D5), taken in one sitting with no notes or copying. The score is not comparable to the official 720 cut score. Zero misses meant no answer-pattern classification was possible. Free mock sources identified for further practice: claudecertificationguide.com full mock, Tutorials Dojo free 20-question sampler, hunted.space Claude Certified Architects (free Quick Sprint, full mock unconfirmed), CCA Foundations Mock Exam (100 questions, Product Hunt), Isha Training Solutions free platform, claudecertprep.com simulated exam (170-question pool; recommended as the next mock). Do not retake szymonpaluch.com (memory effect).
+- Day 10 closure (2026-10-31): the user explicitly decided to close Day 10 and Foundations prep. Skipped by decision: the 30-task-statement one-or-two-sentence check, the second full mock (claudecertprep.com or another source), and the drill of weakest domains and review of the 12 official sample question explanations (no weak domain was identified by the one completed mock). Day 10 is therefore "Done (closed by user decision)", not a normal pass of the completion protocol. The official CCAR-F exam has not been taken.
+- Switch to Professional (2026-10-31): the user decided to pursue Claude Certified Architect – Professional (CCAR-P) instead of taking Foundations. The Professional exam guide v1.0 (July 2026) was reviewed in chat: 63 items, 120 minutes, scaled pass 720/1000, $175, 7 domains (D1 Solution Design 17%, D2 Models/Prompting/Context 13%, D3 Integration 19%, D4 Evaluation/Testing/Optimization 16%, D5 Governance/Safety/Risk 14%, D6 Stakeholder Communication/Lifecycle 14%, D7 Developer Productivity 7%). Gap analysis given: carries over from Foundations are orchestration and decomposition, least privilege and tool bloat, MCP basics, human-in-the-loop, hooks, Claude Code configuration; new are RAG design (chunking, indexing, retrieval strategy), model selection, prompt caching, evaluation design and A/B testing, compliance (GDPR, HIPAA, FedRAMP), bias and fairness, discovery and stakeholder communication, lifecycle management. Rough estimate of 30 to 45 extra hours and an 8 to 10 day plan shape (not yet drafted). Open question: whether CCAR-P gets a fresh progress.md with this file archived, or both certifications in one file.
