@@ -19,6 +19,7 @@ demonstrates the concept, including the anti-patterns the exam tests.
 | (none) | Day 5: built-in tools and escalation (concepts only) | 2.5, 5.2 |
 | (none) | Day 6: Claude Code configuration (concepts only) | 3.1 to 3.4 |
 | (none) | Day 7: CI/CD and review architectures (concepts only) | 3.5, 3.6, 4.1, 4.6 |
+| (none) | Day 8: structured output and extraction (concepts only so far) | 4.2 to 4.5 |
 
 Later days will be added as I complete them.
 
@@ -63,6 +64,15 @@ pipeline (`claude -p` with `--output-format json` and `--json-schema`) was not b
 `--json-schema` value format (inline vs file) and where the schema-conforming result sits
 in the JSON output should be checked against current CLI docs before scripting against it.
 
+**Day 8.** Concepts only so far; the extraction pipeline lab (Exercise 3) has not been
+built. Worked through in notes and questions: extraction tools with JSON schemas,
+`tool_choice` (`auto` vs `any` vs forced), nullable/`unclear`/`other` schema design,
+validation-retry with specific error feedback, `calculated_total` vs `stated_total` and
+`conflict_detected`, few-shot examples for varied layouts, and Message Batches strategy
+(`custom_id`, chunked resubmission, SLA arithmetic). Notes: check the current API docs
+for the exact `tool_choice` request shape, the strict tool use setting, and the Message
+Batches request and result format before scripting against them.
+
 ## Design patterns I keep applying
 
 - Rules that must always hold belong in code (hooks, gates), not prompts.
@@ -97,3 +107,22 @@ in the JSON output should be checked against current CLI docs before scripting a
 - Fix inconsistent prose interpretation with 2-3 concrete input/output examples or
   test-first iteration; use the interview pattern for unfamiliar domains; send interacting
   issues in one message and independent issues sequentially.
+- Tool use with a JSON schema removes syntax errors, not semantic ones. Use
+  `tool_choice` `any` when the document type is unknown and several schemas exist, forced
+  selection when one extraction must run first, and never `auto` when a tool call must be
+  guaranteed.
+- Make fields nullable (and add `unclear` or `other` plus a detail string) when the source
+  may not contain the value; required fields invite fabrication.
+- Retry with the original document, the failed extraction, and the specific validation
+  error. Retry fixes format and structural errors; it cannot recover information that is
+  absent from the source, so use null or route to review instead.
+- Make semantic errors observable: `calculated_total` next to `stated_total`,
+  `conflict_detected` for inconsistent sources, `detected_pattern` for dismissed findings.
+- Systematic misses on a specific input shape call for 2 to 4 targeted few-shot examples
+  with reasoning, not more prose, more examples, or blind retries.
+- Batch only latency-tolerant, non-blocking work; it has no latency SLA and no multi-turn
+  tool calling. Keep the submission interval at or below SLA minus 24 hours (with margin),
+  match results by `custom_id`, resubmit only failures with the fix that addresses the
+  cause, and refine the prompt on a sample before the full run.
+- An aggregate pass rate can hide a failing document type or field; measure accuracy by
+  segment before reducing human review.
