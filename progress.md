@@ -24,7 +24,7 @@
 | 6 | Claude Code configuration | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-10-29 |
 | 7 | CI/CD and review architectures | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-10-30 |
 | 8 | Structured output and extraction | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-10-31 |
-| 9 | Context management and reliability | Not started | - | - | - |
+| 9 | Context management and reliability | In progress | - | - | - |
 | 10 | Mock exam and consolidation | Not started | - | - | - |
 
 ## Task statement coverage
