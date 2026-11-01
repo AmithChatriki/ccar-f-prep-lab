@@ -12,7 +12,11 @@ demonstrates the concept, including the anti-patterns the exam tests.
 
 Foundations preparation is closed: all 10 days are recorded, with Day 10 closed by my own
 decision rather than by completing every planned step. The official CCAR-F exam has not
-been taken. Next target: the Claude Certified Architect – Professional (CCAR-P) exam.
+been taken.
+
+I am now preparing for the Claude Certified Architect – Professional (CCAR-P) exam.
+Preparation started on 2026-11-01 and Day 1 (RAG and retrieval) is complete as concepts
+only. See the CCAR-P section below.
 
 ## Structure
 
@@ -99,6 +103,33 @@ full mock from a different source, and the drill of weakest domains were skipped
 official CCAR-F exam has not been taken. Mock exams from third parties are unofficial and
 their scores are not comparable to the official scaled score.
 
+## CCAR-P (Professional) preparation
+
+An 8-day provisional plan against the official CCAR-P exam guide (v1.0, July 2026). I
+chose to skip the hands-on builds for CCAR-P, so preparation is chat-based with
+multiple-choice and multiple-select checks, and no scripts are added to this repository
+for it.
+
+| Day | Focus | Status |
+|---|---|---|
+| 1 | RAG and retrieval (chunking, indexing, retrieval strategy, diagnosis) | Done (concepts only, build skipped by decision) |
+| 2 | Models, prompting, caching, context | Not started |
+| 3 | Evaluation and optimization | Not started |
+| 4 | Governance, safety, compliance | Not started |
+| 5 | Integration protocols, auth, observability | Not started |
+| 6 | Stakeholder communication and lifecycle | Not started |
+| 7 | Refresh of carried-over content | Not started |
+| 8 | Mock exams and consolidation | Not started |
+
+**Day 1.** Worked through in notes and questions: chunk boundaries aligned to document
+structure, parent-section retrieval and overlap, table header repetition, metadata for
+refresh, filtering and access control, the same embedding model across documents and
+queries, BM25 vs dense vs hybrid retrieval, reranking as a two-stage fix, contextual
+retrieval for chunks that lose identity, and stage-by-stage diagnosis of wrong answers.
+Notes: Anthropic's contextual retrieval benchmark figures are its own published results
+and are directional; check the current docs for the embedding provider lineup before
+building anything on it.
+
 ## Design patterns I keep applying
 
 - Rules that must always hold belong in code (hooks, gates), not prompts.
@@ -174,3 +205,20 @@ their scores are not comparable to the official scaled score.
   validation set, accuracy by document type and field, and ongoing stratified random
   sampling of high-confidence extractions to catch novel errors. Uncalibrated or
   document-level confidence and same-session self-review are not grounds to skip review.
+
+## Design patterns from CCAR-P Day 1 (RAG and retrieval)
+
+- When the right chunk is retrieved but the answer is incomplete, fix chunk boundaries
+  (keep a rule with its exceptions, repeat table headers, return the parent section), not
+  top-k, the model, or the prompt.
+- Match the retrieval method to the query pattern: BM25 or hybrid for exact identifiers,
+  dense for paraphrase, metadata filters for structured attributes, reranking when the
+  right chunk is a candidate but ranked too low.
+- Freshness bugs get a data-layer fix: delete by a stable source key, filter on a version
+  or current flag, and keep one embedding model across the whole corpus. Temperature,
+  top-k, and prompt instructions do not remove stale data.
+- Access control and tenant separation are filters inside the retrieval query, not prompt
+  instructions or after-the-fact logging.
+- Diagnose by stage: check whether the correct chunk was retrieved and at what rank, then
+  whether the model used it, before swapping the model.
+- Report retrieval metrics by query segment; a good aggregate can hide a failing segment.

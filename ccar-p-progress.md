@@ -5,8 +5,8 @@
 - Source of truth: Professional Exam Guide v1.0 (July 2026). Objective numbers below (D1.1 etc.) are my own numbering of the guide's bullets, not official.
 - Target exam date: (not set)
 - Last updated: 2026-11-01
-- Current day: 1
-- Days completed: 0 / 8 (provisional plan; adjust when the plan is confirmed)
+- Current day: 2
+- Days completed: 1 / 8 (provisional plan; adjust when the plan is confirmed)
 
 ## Status key
 - Days: Not started | In progress | Done | Needs review
@@ -30,7 +30,7 @@
 
 | Day | Focus | Domains | Status | Mastery check | Quiz score | Completed on |
 |---|---|---|---|---|---|---|
-| 1 | RAG and retrieval | D3 | In progress | - | - | - |
+| 1 | RAG and retrieval | D3 | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-11-01 |
 | 2 | Models, prompting, caching, context | D2 | Not started | - | - | - |
 | 3 | Evaluation and optimization | D4 | Not started | - | - | - |
 | 4 | Governance, safety, compliance | D5 | Not started | - | - | - |
@@ -58,8 +58,8 @@
 | D3.2 | Analyze authentication and authorization requirements to identify security gaps | New | 5 | Not started |
 | D3.3 | Evaluate accuracy-latency trade-offs and justify configuration decisions | New | 5 | Not started |
 | D3.4 | Analyze observability challenges and select monitoring strategies at scale | New | 5 | Not started |
-| D3.5 | Design a RAG pipeline with appropriate chunking and indexing strategies | New | 1 | Not started |
-| D3.6 | Apply retrieval strategies matched to data shape and query pattern | New | 1 | Not started |
+| D3.5 | Design a RAG pipeline with appropriate chunking and indexing strategies | New | 1 | Solid |
+| D3.6 | Apply retrieval strategies matched to data shape and query pattern | New | 1 | Solid |
 | D3.7 | Select the integration mechanism (MCP, API/CLI, agent-to-agent) | Partly F (2.4) | 5 | Not started |
 | D3.8 | Evaluate progressive discovery vs monolithic context strategy | New | 5 | Not started |
 | D4.1 | Define evaluation metrics (accuracy, latency, cost, safety, security) | New | 3 | Not started |
@@ -88,7 +88,7 @@ The guide recommends building and operating at least one end-to-end Claude solut
 
 | Exercise | Built on | Status | Notes |
 |---|---|---|---|
-| Small RAG pipeline (chunking, index, retrieval) | Day 1 | Not started | - |
+| Small RAG pipeline (chunking, index, retrieval) | Day 1 | Skipped by decision | Skipped by decision (stated at Day 1 start; teaching is chat-only with MCQ checks). Not built: corpus and labeled test set with identifier, paraphrase, and context-dependent segments; fixed-size vs structure-aware chunkers; BM25 vs dense retrieval (optional hybrid); hit@k by segment; stale-chunk refresh simulation with doc_id and version fix. Judgment content covered in chat and through questions. |
 | Prompt caching comparison (static prefix first, cached vs uncached) | Day 2 | Not started | - |
 | Evaluation set and harness (mixed methods, A/B of two prompts) | Day 3 | Not started | - |
 | Logging and observability on the pipeline | Days 3, 5 | Not started | - |
@@ -97,13 +97,13 @@ The guide recommends building and operating at least one end-to-end Claude solut
 ## Weak spots
 (Claude adds entries here as: objective number, what went wrong, what to revisit. Resolved entries are marked resolved, not deleted.)
 
-- None yet.
+- None yet. Day 1 produced no misses on D3.5 or D3.6 (4/4 mid-lesson, 4/4 mastery, 3/3 scenario, including four select-2 questions with the count caught every time).
 
 ## Quiz and practice log
 
 | Date | Topic | Score | Missed objectives |
 |---|---|---|---|
-| - | - | - | - |
+| 2026-11-01 | Day 1 completion: D3.5, D3.6 (4 mastery checks, 3 scenario questions, plus 4 mid-lesson checks 4/4) | Scenario 3/3; mastery 4/4 | None |
 
 ## Diagnostic and mock exam results
 
@@ -117,9 +117,16 @@ The guide recommends building and operating at least one end-to-end Claude solut
 - Rules that must always hold go in code, not prompts.
 - Stable content first, then prompt caching, for repeated prefixes.
 - Confident but wrong answers after a data change point to retrieval and indexing first.
+- Incomplete answers with the right chunk retrieved point to chunk boundaries: align to document structure, keep rules with exceptions, return the parent section; not top-k, model, or prompt changes.
+- Match the retrieval method to the query pattern: BM25 or hybrid for exact identifiers, semantic for paraphrase, metadata filters for structured attributes, reranking when the right chunk is a candidate but ranked too low.
+- Freshness bugs get a data-layer fix: delete by a stable source key, version or is_current filter, one embedding model across the corpus; never temperature, top-k, or a prompt instruction.
+- Access control and tenant separation are filters inside the retrieval query, not prompt instructions or after-the-fact logging.
+- Diagnose by stage: check whether the correct chunk was retrieved and at what rank, then whether the model used it; do not swap the model first.
+- A good aggregate metric can hide a failing query segment; report by segment.
 
 ## Notes
 - Carried over from Foundations: orchestration and decomposition, least privilege and tool bloat, MCP basics, human-in-the-loop, hooks, Claude Code configuration. Foundations tracker is archived in ccar-f-progress.md.
 - Foundations scores and mock results do not transfer: they tested Foundations content only.
 - Items to verify against current Anthropic docs before relying on them: model lineup and selection guidance, prompt caching mechanics and minimum sizes, and any retrieval or embedding specifics.
 - Estimate given on 2026-10-31: about 30 to 45 extra hours beyond Foundations, 8 to 10 day plan shape, not yet confirmed.
+- Day 1 (2026-11-01): taught in chat (chunking, indexing, retrieval matched to data shape and query pattern, RAG failure diagnosis; one topic at a time with a mid-lesson MCQ check each, 4/4). Hands-on build skipped by decision. Verified in current docs on 2026-11-01: Anthropic does not offer its own embedding model and names Voyage AI as an embeddings provider; contextual retrieval top-20 failure rates (5.7%, 3.7%, 2.9%, 1.9%) are Anthropic's published benchmark figures. Not verified: the roughly 200,000-token threshold for skipping retrieval in favor of a full-corpus prompt with caching, and the exact current embedding model lineup. Later exercises written to build on the Day 1 pipeline (Days 3, 4, 5) will need a decision on how to handle them given builds are skipped.
