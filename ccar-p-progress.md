@@ -4,8 +4,8 @@
 - Exam facts: 63 items, 120 minutes, scaled pass 720/1000, $175, multiple-choice and multiple-response (each item states how many to select)
 - Source of truth: Professional Exam Guide v1.0 (July 2026). Objective numbers below (D1.1 etc.) are my own numbering of the guide's bullets, not official.
 - Target exam date: (not set)
-- Last updated: 2026-10-31
-- Current day: Not started
+- Last updated: 2026-11-01
+- Current day: 1
 - Days completed: 0 / 8 (provisional plan; adjust when the plan is confirmed)
 
 ## Status key
@@ -30,7 +30,7 @@
 
 | Day | Focus | Domains | Status | Mastery check | Quiz score | Completed on |
 |---|---|---|---|---|---|---|
-| 1 | RAG and retrieval | D3 | Not started | - | - | - |
+| 1 | RAG and retrieval | D3 | In progress | - | - | - |
 | 2 | Models, prompting, caching, context | D2 | Not started | - | - | - |
 | 3 | Evaluation and optimization | D4 | Not started | - | - | - |
 | 4 | Governance, safety, compliance | D5 | Not started | - | - | - |
