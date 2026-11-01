@@ -15,8 +15,8 @@ decision rather than by completing every planned step. The official CCAR-F exam 
 been taken.
 
 I am now preparing for the Claude Certified Architect – Professional (CCAR-P) exam.
-Preparation started on 2026-11-01 and Day 1 (RAG and retrieval) is complete as concepts
-only. See the CCAR-P section below.
+Preparation started on 2026-11-01. Days 1 (RAG and retrieval) and 2 (models, prompting,
+caching, context) are complete as concepts only. See the CCAR-P section below.
 
 ## Structure
 
@@ -113,7 +113,7 @@ for it.
 | Day | Focus | Status |
 |---|---|---|
 | 1 | RAG and retrieval (chunking, indexing, retrieval strategy, diagnosis) | Done (concepts only, build skipped by decision) |
-| 2 | Models, prompting, caching, context | Not started |
+| 2 | Models, prompting, caching, context | Done (concepts only, build skipped by decision) |
 | 3 | Evaluation and optimization | Not started |
 | 4 | Governance, safety, compliance | Not started |
 | 5 | Integration protocols, auth, observability | Not started |
@@ -129,6 +129,20 @@ retrieval for chunks that lose identity, and stage-by-stage diagnosis of wrong a
 Notes: Anthropic's contextual retrieval benchmark figures are its own published results
 and are directional; check the current docs for the embedding provider lineup before
 building anything on it.
+
+**Day 2.** Worked through in notes and questions: model selection by task, stage, and
+segment (small tier for narrow high-volume work, capable tier for multi-step reasoning,
+batch for latency-tolerant work, effort as a per-task cost and latency setting), prompt
+caching (`cache_control` breakpoints, stable prefix first, what invalidates the cache,
+checking `cache_read_input_tokens`), modular prompts, Skills and progressive disclosure,
+context and token budgeting (trimming tool results, retrieval instead of stuffing, facts
+carried forward verbatim), system prompts, templates, and layered guardrails, and the
+zero-shot, few-shot, and chain-of-thought trade-offs. Not built: a cached vs uncached
+comparison with timestamp-in-prefix and breakpoint-on-varying-block variants. Notes: the
+model lineup, prices, and cache minimums change, so check the current docs (models
+overview, prompt caching, pricing) before relying on any figure; the Skills API request
+shape, token counting, context editing, compaction, and tool search were not verified, so
+read their docs before building on them.
 
 ## Design patterns I keep applying
 
@@ -222,3 +236,31 @@ building anything on it.
 - Diagnose by stage: check whether the correct chunk was retrieved and at what rank, then
   whether the model used it, before swapping the model.
 - Report retrieval metrics by query segment; a good aggregate can hide a failing segment.
+
+## Design patterns from CCAR-P Day 2 (models, prompting, caching, context)
+
+- Choose the model per stage and per segment from your own labeled evaluation, not one
+  model everywhere and not public benchmarks: a small tier for narrow high-volume work, a
+  capable tier for multi-step reasoning, batch for latency-tolerant bulk work. An overall
+  accuracy figure can hide a failing segment, so evaluate each routed segment.
+- Caching makes a repeated prefix cheaper, Skills make the context smaller, and modular
+  prompts make the prompt maintainable. Match the mechanism to the symptom.
+- Put stable content first and the cache breakpoint on the last block that is identical
+  across the requests sharing the cache. Never put it on a block that varies (timestamp,
+  retrieved passages, user message). Confirm with `cache_read_input_tokens` above 0; both
+  cache fields at 0 means the prompt was not cached (a varying prefix, a prefix under the
+  model's minimum, or an expired TTL).
+- Changing tool definitions, `tool_choice`, images, or the thinking and effort settings
+  invalidates part or all of the cache, so keep them consistent across requests that
+  should share it.
+- A larger context window is capacity, not a strategy. Trim tool results to the needed
+  fields at the source, retrieve the relevant passages instead of stuffing the corpus, and
+  carry critical facts in a structured block passed forward verbatim.
+- Treat untrusted content (documents, tool output, user input) as data delimited from the
+  instructions. When the harm depends on a capability the role does not need, remove the
+  capability first; stronger prompt wording is soft and logging is detective.
+- Put the rules that must always hold in the tool layer, query filters, or approval gates,
+  not in capitals, repetition, or a self-check line in the prompt.
+- Match the prompting technique to the gap: a few diverse few-shot examples for a specific
+  boundary or input-shape gap, more reasoning only for multi-step reasoning failures, and
+  never maximum effort or the top tier by default.

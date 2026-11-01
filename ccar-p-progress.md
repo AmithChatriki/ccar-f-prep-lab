@@ -5,8 +5,8 @@
 - Source of truth: Professional Exam Guide v1.0 (July 2026). Objective numbers below (D1.1 etc.) are my own numbering of the guide's bullets, not official.
 - Target exam date: (not set)
 - Last updated: 2026-11-01
-- Current day: 2
-- Days completed: 1 / 8 (provisional plan; adjust when the plan is confirmed)
+- Current day: 3
+- Days completed: 2 / 8 (provisional plan; adjust when the plan is confirmed)
 
 ## Status key
 - Days: Not started | In progress | Done | Needs review
@@ -31,7 +31,7 @@
 | Day | Focus | Domains | Status | Mastery check | Quiz score | Completed on |
 |---|---|---|---|---|---|---|
 | 1 | RAG and retrieval | D3 | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-11-01 |
-| 2 | Models, prompting, caching, context | D2 | In progress | - | - | - |
+| 2 | Models, prompting, caching, context | D2 | Done | Passed (MCQ format, 4/5; missed the capability-removal option on the D2.2 injection question, re-check in scenario 2 correct) | 3/3 | 2026-11-01 |
 | 3 | Evaluation and optimization | D4 | Not started | - | - | - |
 | 4 | Governance, safety, compliance | D5 | Not started | - | - | - |
 | 5 | Integration protocols, auth, observability | D3 | Not started | - | - | - |
@@ -49,11 +49,11 @@
 | D1.4 | Design multi-agent systems and orchestration strategies | F (1.2, 1.3) | 7 | Not started |
 | D1.5 | Apply decomposition techniques for complex problem solving | F (1.6) | 7 | Not started |
 | D1.6 | Align solutions to business value pillars (efficiency, transformation, productivity, cost, performance SLAs) | New | 6 | Not started |
-| D2.1 | Select Claude models based on trade-offs | New | 2 | Not started |
-| D2.2 | Design system prompts, templates, and guardrails | New | 2 | Not started |
-| D2.3 | Apply prompting techniques (zero-shot, few-shot, chain-of-thought) | Partly F (4.2) | 2 | Not started |
-| D2.4 | Optimize context windows and manage token usage | Partly F (5.1) | 2 | Not started |
-| D2.5 | Implement prompt reuse (caching, modular prompts, Skills) | New (caching), partly F (Skills) | 2 | Not started |
+| D2.1 | Select Claude models based on trade-offs | New | 2 | Solid |
+| D2.2 | Design system prompts, templates, and guardrails | New | 2 | Solid |
+| D2.3 | Apply prompting techniques (zero-shot, few-shot, chain-of-thought) | Partly F (4.2) | 2 | Solid |
+| D2.4 | Optimize context windows and manage token usage | Partly F (5.1) | 2 | Solid |
+| D2.5 | Implement prompt reuse (caching, modular prompts, Skills) | New (caching), partly F (Skills) | 2 | Solid |
 | D3.1 | Evaluate tool/agent configuration for capability bloat | F (2.3) | 5 | Not started |
 | D3.2 | Analyze authentication and authorization requirements to identify security gaps | New | 5 | Not started |
 | D3.3 | Evaluate accuracy-latency trade-offs and justify configuration decisions | New | 5 | Not started |
@@ -89,7 +89,7 @@ The guide recommends building and operating at least one end-to-end Claude solut
 | Exercise | Built on | Status | Notes |
 |---|---|---|---|
 | Small RAG pipeline (chunking, index, retrieval) | Day 1 | Skipped by decision | Skipped by decision (stated at Day 1 start; teaching is chat-only with MCQ checks). Not built: corpus and labeled test set with identifier, paraphrase, and context-dependent segments; fixed-size vs structure-aware chunkers; BM25 vs dense retrieval (optional hybrid); hit@k by segment; stale-chunk refresh simulation with doc_id and version fix. Judgment content covered in chat and through questions. |
-| Prompt caching comparison (static prefix first, cached vs uncached) | Day 2 | Skipped by decision | Skipped by decision (stated at Day 2 start; chat-only). Not built: static prefix above the minimum cacheable length with cache_control on the last static block; two back-to-back calls comparing usage fields and latency; timestamp-in-prefix variant (expect no read); breakpoint-on-varying-block variant (expect a write every time). Judgment content covered in chat and through questions. |
+| Prompt caching comparison (static prefix first, cached vs uncached) | Day 2 | Skipped by decision | Skipped by decision (stated at Day 2 start; chat-only). Not built: static prefix above the minimum cacheable length with cache_control on the last static block; two back-to-back calls comparing usage fields and latency; timestamp-in-prefix variant (expect no read); breakpoint-on-varying-block variant (expect a write every time). Judgment content covered in chat and through questions; worked code examples of caching, modular prompt assembly, and a SKILL.md shown in chat only. |
 | Evaluation set and harness (mixed methods, A/B of two prompts) | Day 3 | Not started | - |
 | Logging and observability on the pipeline | Days 3, 5 | Not started | - |
 | Guardrail and human-review routing | Day 4 | Not started | - |
@@ -98,12 +98,15 @@ The guide recommends building and operating at least one end-to-end Claude solut
 (Claude adds entries here as: objective number, what went wrong, what to revisit. Resolved entries are marked resolved, not deleted.)
 
 - None yet. Day 1 produced no misses on D3.5 or D3.6 (4/4 mid-lesson, 4/4 mastery, 3/3 scenario, including four select-2 questions with the count caught every time).
+- D2.5 (2026-11-01, resolved 2026-11-01): On a caching clarification check, put the single breakpoint on the first block (the only block that never changes) instead of the last block that is identical across the requests sharing the cache, so the monthly catalog was reprocessed on every request. Re-check on tools plus system prompt placement answered correctly, then mastery check 2 and scenario 1 correct. Rule to keep: the breakpoint goes on the last block identical across the sharing requests, never on a block that varies.
+- D2.2 (2026-11-01, resolved 2026-11-01): On a mastery check about a prompt-injection line inside an uploaded document, chose stronger prompt wording (select 2: delimiting document text as untrusted data was right, but missed removing the unneeded email tool from the role). Scenario 2 re-check (remove the delete and directory-export tools from a summarizer) answered correctly. Rule to keep: when the harm depends on a capability the role does not need, remove the capability first; prompt wording and logging are soft or detective. Refresh on Day 4 guardrails.
 
 ## Quiz and practice log
 
 | Date | Topic | Score | Missed objectives |
 |---|---|---|---|
 | 2026-11-01 | Day 1 completion: D3.5, D3.6 (4 mastery checks, 3 scenario questions, plus 4 mid-lesson checks 4/4) | Scenario 3/3; mastery 4/4 | None |
+| 2026-11-01 | Day 2 completion: D2.1 to D2.5 (5 mastery checks, 3 scenario questions, plus 5 topic mid-lesson checks 5/5 and 2 caching clarification checks 1/2) | Scenario 3/3; mastery 4/5 | D2.2 (mastery); D2.5 (clarification check); both resolved 2026-11-01 |
 
 ## Diagnostic and mock exam results
 
@@ -123,6 +126,12 @@ The guide recommends building and operating at least one end-to-end Claude solut
 - Access control and tenant separation are filters inside the retrieval query, not prompt instructions or after-the-fact logging.
 - Diagnose by stage: check whether the correct chunk was retrieved and at what rank, then whether the model used it; do not swap the model first.
 - A good aggregate metric can hide a failing query segment; report by segment.
+- Cache breakpoint goes on the last block identical across the requests sharing the cache, never on a block that varies (timestamp, retrieved passages, user message); verify with cache_read_input_tokens above 0.
+- Caching makes a repeated prefix cheaper; Skills make the context smaller; modular prompts make the prompt maintainable; match the mechanism to the symptom.
+- Pick the model per stage and per segment from your own labeled evaluation (small tier for narrow high-volume work, capable tier for multi-step reasoning, batch for latency-tolerant work), not one model everywhere and not public benchmarks.
+- A bigger context window is capacity, not a strategy: trim tool results at the source, retrieve instead of stuffing, and carry critical facts in a structured block passed forward verbatim.
+- Untrusted content (documents, tool output, user input) is data, delimited from instructions; when harm depends on a capability the role does not need, remove the capability.
+- Match the prompting technique to the gap: few-shot examples for a specific boundary or input-shape gap, more reasoning only for multi-step reasoning failures, never maximum effort or the top tier by default.
 
 ## Notes
 - Carried over from Foundations: orchestration and decomposition, least privilege and tool bloat, MCP basics, human-in-the-loop, hooks, Claude Code configuration. Foundations tracker is archived in ccar-f-progress.md.
@@ -131,3 +140,4 @@ The guide recommends building and operating at least one end-to-end Claude solut
 - Estimate given on 2026-10-31: about 30 to 45 extra hours beyond Foundations, 8 to 10 day plan shape, not yet confirmed.
 - Day 1 (2026-11-01): taught in chat (chunking, indexing, retrieval matched to data shape and query pattern, RAG failure diagnosis; one topic at a time with a mid-lesson MCQ check each, 4/4). Hands-on build skipped by decision. Verified in current docs on 2026-11-01: Anthropic does not offer its own embedding model and names Voyage AI as an embeddings provider; contextual retrieval top-20 failure rates (5.7%, 3.7%, 2.9%, 1.9%) are Anthropic's published benchmark figures. Not verified: the roughly 200,000-token threshold for skipping retrieval in favor of a full-corpus prompt with caching, and the exact current embedding model lineup. Later exercises written to build on the Day 1 pipeline (Days 3, 4, 5) will need a decision on how to handle them given builds are skipped.
 - Day 2 start (2026-11-01): verified in current docs. Model lineup: Fable 5.1, Opus 5.5, Sonnet 5.5, Haiku 5.5, all 1M context and 128K max output; roles: Fable for demanding reasoning and long-horizon agentic work, Opus for long-running agentic coding and knowledge work (docs' default starting point), Sonnet for the best speed-intelligence balance, Haiku for high-volume latency-sensitive classification, extraction, routing; latency Slower/Moderate/Fast/Fastest; Batch API 50% off; adaptive thinking steered by effort. Prompt caching: cache_control top-level (automatic) or on blocks (explicit, up to 4 breakpoints); prefix order tools, system, messages; 5-minute default TTL refreshed on use, 1-hour TTL at higher write cost; 5-minute writes 1.25x, 1-hour writes 2x, reads 0.1x base with lower multipliers on some current models; minimum cacheable prefix 512 tokens for the current lineup (differs on older models), silently skipped below it; breakpoint belongs on the last block identical across requests; tool definition changes invalidate everything, tool_choice, images, thinking and effort changes invalidate messages; verify via cache_creation_input_tokens and cache_read_input_tokens. Exam guide names no models, so selection logic matters more than names or prices. Not verified yet: Skills mechanics and the choosing-a-model page. Day 2 build skipped by decision (chat-only), consistent with Day 1.
+- Day 2 completion (2026-11-01): taught in chat (D2.1 model selection, D2.5 caching, modular prompts and Skills, D2.4 context budgeting, D2.2 system prompts, templates and guardrails, D2.3 zero-shot, few-shot, chain-of-thought; one topic at a time with a mid-lesson MCQ check each). The user asked for simple worked examples of caching, modular prompts, and Skills, then for a plain explanation of stable block and breakpoint; both were explained with a code-review assistant example and block diagrams. Skills mechanics verified in current docs: SKILL.md with YAML frontmatter (name, description), three loading levels (metadata always loaded at roughly 100 tokens per Skill, SKILL.md body under about 5k tokens when triggered, bundled files and scripts as needed with script contents not loaded into context), API use via skill_id in the container parameter with the code execution tool, custom Skills shared workspace-wide, sandbox with no network access and no runtime package installation. Not verified: the exact Skills API request shape, token counting, context editing, compaction, tool search, and the choosing-a-model page (named in docs navigation only), and Anthropic's current prompting best-practices guidance (XML tag conventions not asserted). The Haiku 5.5 pricing in the docs is tiered by prompt length (lower input rate up to 100,000 tokens); check the pricing page before assuming linear cost. Day 3 hands-on exercises (evaluation harness, logging) will need a decision on builds, consistent with the chat-only approach so far.
