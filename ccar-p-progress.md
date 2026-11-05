@@ -4,9 +4,9 @@
 - Exam facts: 63 items, 120 minutes, scaled pass 720/1000, $175, multiple-choice and multiple-response (each item states how many to select)
 - Source of truth: Professional Exam Guide v1.0 (July 2026). Objective numbers below (D1.1 etc.) are my own numbering of the guide's bullets, not official.
 - Target exam date: (not set)
-- Last updated: 2026-11-01
-- Current day: 3
-- Days completed: 2 / 8 (provisional plan; adjust when the plan is confirmed)
+- Last updated: 2026-11-05
+- Current day: 4
+- Days completed: 3 / 8 (provisional plan; adjust when the plan is confirmed)
 
 ## Status key
 - Days: Not started | In progress | Done | Needs review
@@ -32,7 +32,7 @@
 |---|---|---|---|---|---|---|
 | 1 | RAG and retrieval | D3 | Done | Passed (MCQ format, 4/4) | 3/3 | 2026-11-01 |
 | 2 | Models, prompting, caching, context | D2 | Done | Passed (MCQ format, 4/5; missed the capability-removal option on the D2.2 injection question, re-check in scenario 2 correct) | 3/3 | 2026-11-01 |
-| 3 | Evaluation and optimization | D4 | In progress | - | - | - |
+| 3 | Evaluation and optimization | D4 | Done | Passed (MCQ format, 5/5) | 3/3 | 2026-11-05 |
 | 4 | Governance, safety, compliance | D5 | Not started | - | - | - |
 | 5 | Integration protocols, auth, observability | D3 | Not started | - | - | - |
 | 6 | Stakeholder communication and lifecycle | D6 | Not started | - | - | - |
@@ -62,12 +62,12 @@
 | D3.6 | Apply retrieval strategies matched to data shape and query pattern | New | 1 | Solid |
 | D3.7 | Select the integration mechanism (MCP, API/CLI, agent-to-agent) | Partly F (2.4) | 5 | Not started |
 | D3.8 | Evaluate progressive discovery vs monolithic context strategy | New | 5 | Not started |
-| D4.1 | Define evaluation metrics (accuracy, latency, cost, safety, security) | New | 3 | Not started |
-| D4.2 | Design evaluation datasets and test frameworks using mixed methodologies | Partly F (5.5) | 3 | Not started |
-| D4.3 | Conduct A/B testing and iterative improvements | New | 3 | Not started |
-| D4.4 | Diagnose system issues (prompt failure, hallucinations, model mismatch) | New | 3 | Not started |
-| D4.5 | Optimize token usage, latency, and cost-performance trade-offs | New | 3 | Not started |
-| D4.6 | Monitor performance using logging and observability tools | New | 3 | Not started |
+| D4.1 | Define evaluation metrics (accuracy, latency, cost, safety, security) | New | 3 | Solid |
+| D4.2 | Design evaluation datasets and test frameworks using mixed methodologies | Partly F (5.5) | 3 | Solid |
+| D4.3 | Conduct A/B testing and iterative improvements | New | 3 | Solid |
+| D4.4 | Diagnose system issues (prompt failure, hallucinations, model mismatch) | New | 3 | Solid |
+| D4.5 | Optimize token usage, latency, and cost-performance trade-offs | New | 3 | Solid |
+| D4.6 | Monitor performance using logging and observability tools | New | 3 | Solid |
 | D5.1 | Implement guardrails and safety controls | Partly F (1.5) | 4 | Not started |
 | D5.2 | Identify risks, limitations, and failure modes of LLM systems | New | 4 | Not started |
 | D5.3 | Apply human-in-the-loop validation strategies | F (5.2, 5.5) | 4 | Not started |
@@ -90,14 +90,15 @@ The guide recommends building and operating at least one end-to-end Claude solut
 |---|---|---|---|
 | Small RAG pipeline (chunking, index, retrieval) | Day 1 | Skipped by decision | Skipped by decision (stated at Day 1 start; teaching is chat-only with MCQ checks). Not built: corpus and labeled test set with identifier, paraphrase, and context-dependent segments; fixed-size vs structure-aware chunkers; BM25 vs dense retrieval (optional hybrid); hit@k by segment; stale-chunk refresh simulation with doc_id and version fix. Judgment content covered in chat and through questions. |
 | Prompt caching comparison (static prefix first, cached vs uncached) | Day 2 | Skipped by decision | Skipped by decision (stated at Day 2 start; chat-only). Not built: static prefix above the minimum cacheable length with cache_control on the last static block; two back-to-back calls comparing usage fields and latency; timestamp-in-prefix variant (expect no read); breakpoint-on-varying-block variant (expect a write every time). Judgment content covered in chat and through questions; worked code examples of caching, modular prompt assembly, and a SKILL.md shown in chat only. |
-| Evaluation set and harness (mixed methods, A/B of two prompts) | Day 3 | Not started | Build vs chat-only decision pending at Day 3 start. |
-| Logging and observability on the pipeline | Days 3, 5 | Not started | - |
+| Evaluation set and harness (mixed methods, A/B of two prompts) | Day 3 | Skipped by decision | Skipped by decision (Day 3 started chat-only, consistent with Days 1 and 2; no objection raised). Not built: 30 to 40 case JSONL eval set with segment tags (typical, edge, adversarial, ambiguous) and a held-out portion; harness mixing exact-match or code checks with a rubric-based LLM grader, reporting accuracy by segment; A/B of two prompt versions on the same set with per-segment deltas. Judgment content covered in chat and through questions. |
+| Logging and observability on the pipeline | Days 3, 5 | Not started | Day 3 part (structured per-request logs with trace ID, prompt version, model, token and cache usage, latency) skipped by decision; Day 5 tracing part not started. Judgment content for D4.6 covered in chat and through questions. |
 | Guardrail and human-review routing | Day 4 | Not started | - |
 
 ## Weak spots
 (Claude adds entries here as: objective number, what went wrong, what to revisit. Resolved entries are marked resolved, not deleted.)
 
 - None yet. Day 1 produced no misses on D3.5 or D3.6 (4/4 mid-lesson, 4/4 mastery, 3/3 scenario, including four select-2 questions with the count caught every time).
+- Day 3 produced no misses on D4.1 to D4.6 (6/6 mid-lesson, 5/5 mastery, 3/3 scenario, including nine select-2 questions with the count caught every time).
 - D2.5 (2026-11-01, resolved 2026-11-01): On a caching clarification check, put the single breakpoint on the first block (the only block that never changes) instead of the last block that is identical across the requests sharing the cache, so the monthly catalog was reprocessed on every request. Re-check on tools plus system prompt placement answered correctly, then mastery check 2 and scenario 1 correct. Rule to keep: the breakpoint goes on the last block identical across the sharing requests, never on a block that varies.
 - D2.2 (2026-11-01, resolved 2026-11-01): On a mastery check about a prompt-injection line inside an uploaded document, chose stronger prompt wording (select 2: delimiting document text as untrusted data was right, but missed removing the unneeded email tool from the role). Scenario 2 re-check (remove the delete and directory-export tools from a summarizer) answered correctly. Rule to keep: when the harm depends on a capability the role does not need, remove the capability first; prompt wording and logging are soft or detective. Refresh on Day 4 guardrails.
 
@@ -107,6 +108,7 @@ The guide recommends building and operating at least one end-to-end Claude solut
 |---|---|---|---|
 | 2026-11-01 | Day 1 completion: D3.5, D3.6 (4 mastery checks, 3 scenario questions, plus 4 mid-lesson checks 4/4) | Scenario 3/3; mastery 4/4 | None |
 | 2026-11-01 | Day 2 completion: D2.1 to D2.5 (5 mastery checks, 3 scenario questions, plus 5 topic mid-lesson checks 5/5 and 2 caching clarification checks 1/2) | Scenario 3/3; mastery 4/5 | D2.2 (mastery); D2.5 (clarification check); both resolved 2026-11-01 |
+| 2026-11-05 | Day 3 completion: D4.1 to D4.6 (5 mastery checks, 3 scenario questions, plus 6 mid-lesson checks 6/6) | Scenario 3/3; mastery 5/5 | None |
 
 ## Diagnostic and mock exam results
 
@@ -132,6 +134,12 @@ The guide recommends building and operating at least one end-to-end Claude solut
 - A bigger context window is capacity, not a strategy: trim tool results at the source, retrieve instead of stuffing, and carry critical facts in a structured block passed forward verbatim.
 - Untrusted content (documents, tool output, user input) is data, delimited from instructions; when harm depends on a capability the role does not need, remove the capability.
 - Match the prompting technique to the gap: few-shot examples for a specific boundary or input-shape gap, more reasoning only for multi-step reasoning failures, never maximum effort or the top tier by default.
+- Metrics: fix the metric, threshold, and guardrail metrics before testing; pair every safety metric with an over-refusal or task-completion guardrail; report p95 or p99 for latency and cost per successful task, not means or per-call cost.
+- Evaluation design: mirror production traffic, over-represent edge, adversarial, and ambiguous cases, tag segments, keep a held-out set, and refresh from production. Code checks for deterministic fields, a specific rubric for the LLM grader, validated against human labels, with humans on a sampled slice and the highest-risk segment.
+- A/B testing: same fixed set, one variable at a time, pre-set decision rule and guardrails, segment report, enough cases to beat noise, staged rollout with rollback; never different data per arm or a winner from a marginal aggregate gap.
+- Diagnose by stage with evidence: correct source absent from context means retrieval or indexing; correct source present but contradicted means prompt or grounding (quoted support, abstain path), and only then a model tier change for that stage; a defect in an upstream stage is fixed before changing a downstream prompt.
+- Match the cost or latency lever to the failing metric: caching for a repeated prefix, streaming for perceived latency (not cost), batch only for latency-tolerant work, a smaller tier per validated segment, lower effort only where the eval holds; truncating needed context is never the answer.
+- Monitoring is layered: provider-level usage and cost data cannot judge answer quality; per-request stage logs with a trace ID localize failures; sampled quality grading catches silent drift when errors, latency, and token usage all look flat. Logs are governed data: redact or reference by ID, control access, set retention.
 
 ## Notes
 - Carried over from Foundations: orchestration and decomposition, least privilege and tool bloat, MCP basics, human-in-the-loop, hooks, Claude Code configuration. Foundations tracker is archived in ccar-f-progress.md.
@@ -141,4 +149,5 @@ The guide recommends building and operating at least one end-to-end Claude solut
 - Day 1 (2026-11-01): taught in chat (chunking, indexing, retrieval matched to data shape and query pattern, RAG failure diagnosis; one topic at a time with a mid-lesson MCQ check each, 4/4). Hands-on build skipped by decision. Verified in current docs on 2026-11-01: Anthropic does not offer its own embedding model and names Voyage AI as an embeddings provider; contextual retrieval top-20 failure rates (5.7%, 3.7%, 2.9%, 1.9%) are Anthropic's published benchmark figures. Not verified: the roughly 200,000-token threshold for skipping retrieval in favor of a full-corpus prompt with caching, and the exact current embedding model lineup. Later exercises written to build on the Day 1 pipeline (Days 3, 4, 5) will need a decision on how to handle them given builds are skipped.
 - Day 2 start (2026-11-01): verified in current docs. Model lineup: Fable 5.1, Opus 5.5, Sonnet 5.5, Haiku 5.5, all 1M context and 128K max output; roles: Fable for demanding reasoning and long-horizon agentic work, Opus for long-running agentic coding and knowledge work (docs' default starting point), Sonnet for the best speed-intelligence balance, Haiku for high-volume latency-sensitive classification, extraction, routing; latency Slower/Moderate/Fast/Fastest; Batch API 50% off; adaptive thinking steered by effort. Prompt caching: cache_control top-level (automatic) or on blocks (explicit, up to 4 breakpoints); prefix order tools, system, messages; 5-minute default TTL refreshed on use, 1-hour TTL at higher write cost; 5-minute writes 1.25x, 1-hour writes 2x, reads 0.1x base with lower multipliers on some current models; minimum cacheable prefix 512 tokens for the current lineup (differs on older models), silently skipped below it; breakpoint belongs on the last block identical across requests; tool definition changes invalidate everything, tool_choice, images, thinking and effort changes invalidate messages; verify via cache_creation_input_tokens and cache_read_input_tokens. Exam guide names no models, so selection logic matters more than names or prices. Not verified yet: Skills mechanics and the choosing-a-model page. Day 2 build skipped by decision (chat-only), consistent with Day 1.
 - Day 2 completion (2026-11-01): taught in chat (D2.1 model selection, D2.5 caching, modular prompts and Skills, D2.4 context budgeting, D2.2 system prompts, templates and guardrails, D2.3 zero-shot, few-shot, chain-of-thought; one topic at a time with a mid-lesson MCQ check each). The user asked for simple worked examples of caching, modular prompts, and Skills, then for a plain explanation of stable block and breakpoint; both were explained with a code-review assistant example and block diagrams. Skills mechanics verified in current docs: SKILL.md with YAML frontmatter (name, description), three loading levels (metadata always loaded at roughly 100 tokens per Skill, SKILL.md body under about 5k tokens when triggered, bundled files and scripts as needed with script contents not loaded into context), API use via skill_id in the container parameter with the code execution tool, custom Skills shared workspace-wide, sandbox with no network access and no runtime package installation. Not verified: the exact Skills API request shape, token counting, context editing, compaction, tool search, and the choosing-a-model page (named in docs navigation only), and Anthropic's current prompting best-practices guidance (XML tag conventions not asserted). The Haiku 5.5 pricing in the docs is tiered by prompt length (lower input rate up to 100,000 tokens); check the pricing page before assuming linear cost. Day 3 hands-on exercises (evaluation harness, logging) will need a decision on builds, consistent with the chat-only approach so far.
-- Day 3 start (2026-11-01): checked current docs. Success criteria should be specific, measurable, and multidimensional; eval design principles: mirror the real task distribution, include edge cases, automate grading; grading families: code-based, LLM-graded, human; evaluation should be ongoing with offline evals refreshed from production data. Docs navigation lists an Evaluation Tool, Reducing latency, and Reduce hallucinations pages. Not verified: Evaluation Tool mechanics, latency page contents, and any specific logging or usage-reporting features; check at D4.5 and D4.6. Teaching order planned: D4.1, D4.2, D4.4, D4.3, D4.5, D4.6. Build vs chat-only decision for Day 3 pending.
+- Day 3 start (2026-11-05): checked current docs. Success criteria should be specific, measurable, and multidimensional; eval design principles: mirror the real task distribution, include edge cases, automate grading; grading families: code-based, LLM-graded, human; evaluation should be ongoing with offline evals refreshed from production data. Latency page: three levers (choose the right model, trim prompt and output length, stream), latency measured as baseline latency and time to first token, build a working prompt before optimizing latency, effort described as the main speed and cost control, max_tokens is a blunt cutoff that truncates. Usage and Cost Admin API: organization-level historical usage and cost, requires Admin API credentials, groupable by dimensions such as model, API key, and workspace, data typically within about five minutes, partner observability and FinOps integrations listed. Not verified: Evaluation Tool mechanics, tracing and OpenTelemetry specifics, exact effort level names. Day 3 build decision: chat-only (no objection raised).
+- Day 3 completion (2026-11-05): taught in chat (D4.1, D4.2, D4.4, D4.3, D4.5, D4.6, one topic at a time with a mid-lesson MCQ check each, 6/6). The user asked what a stage is in stage-level logging (explained with a five-stage RAG and tool pipeline and a per-stage log example), what p95 and p99 mean (explained with a 100-request worked example where the mean hides a slow tail), and what "p95 latency is flat" means (a flat trend over time, one of several clues that the system looked healthy while quality drifted silently). Standing preference stated on Day 3: any question with two correct answers is written with 5 options, not 4. Mastery check 1 (written before the preference) had 4 options. Recurring Day 3 patterns are in the answer-patterns list above.

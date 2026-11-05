@@ -15,8 +15,9 @@ decision rather than by completing every planned step. The official CCAR-F exam 
 been taken.
 
 I am now preparing for the Claude Certified Architect – Professional (CCAR-P) exam.
-Preparation started on 2026-11-01. Days 1 (RAG and retrieval) and 2 (models, prompting,
-caching, context) are complete as concepts only. See the CCAR-P section below.
+Preparation started on 2026-11-01. Days 1 (RAG and retrieval), 2 (models, prompting,
+caching, context), and 3 (evaluation and optimization) are complete as concepts only.
+See the CCAR-P section below.
 
 ## Structure
 
@@ -114,7 +115,7 @@ for it.
 |---|---|---|
 | 1 | RAG and retrieval (chunking, indexing, retrieval strategy, diagnosis) | Done (concepts only, build skipped by decision) |
 | 2 | Models, prompting, caching, context | Done (concepts only, build skipped by decision) |
-| 3 | Evaluation and optimization | Not started |
+| 3 | Evaluation and optimization | Done (concepts only, build skipped by decision) |
 | 4 | Governance, safety, compliance | Not started |
 | 5 | Integration protocols, auth, observability | Not started |
 | 6 | Stakeholder communication and lifecycle | Not started |
@@ -143,6 +144,26 @@ model lineup, prices, and cache minimums change, so check the current docs (mode
 overview, prompt caching, pricing) before relying on any figure; the Skills API request
 shape, token counting, context editing, compaction, and tool search were not verified, so
 read their docs before building on them.
+
+**Day 3.** Worked through in notes and questions: evaluation metrics tied to business
+requirements (accuracy by segment, p95 and p99 latency, cost per successful task, safety
+metrics paired with an over-refusal guardrail, security metrics such as injection success
+rate), evaluation dataset design (production-shaped distribution, over-represented edge
+and adversarial cases, segment tags, a held-out set, refresh from production), mixed
+grading (code checks for deterministic fields, a rubric-based LLM grader validated
+against human labels, humans on a sampled slice and the highest-risk segment), A/B
+testing (same fixed set, one variable at a time, pre-set decision rule and guardrails,
+staged rollout with rollback), diagnosis by stage (retrieval vs prompt or grounding vs
+hallucination vs model mismatch, including upstream defects such as truncated stage
+output), matching the cost or latency lever to the failing metric (caching, streaming,
+batch, per-segment model tier, effort, output length), and layered monitoring (provider
+usage and cost data, per-stage request logs with a trace ID, sampled production quality
+grading, governed logs). Not built: a 30 to 40 case eval set with segment tags and a
+held-out portion, a harness mixing code checks with an LLM grader that reports by
+segment, an A/B of two prompt versions, and structured per-request logging. Notes: the
+latency guidance and the Usage and Cost Admin API were checked in current docs; the
+Evaluation Tool mechanics, tracing and OpenTelemetry specifics, and exact effort level
+names were not verified, so read their docs before building on them.
 
 ## Design patterns I keep applying
 
@@ -264,3 +285,35 @@ read their docs before building on them.
 - Match the prompting technique to the gap: a few diverse few-shot examples for a specific
   boundary or input-shape gap, more reasoning only for multi-step reasoning failures, and
   never maximum effort or the top tier by default.
+
+## Design patterns from CCAR-P Day 3 (evaluation and optimization)
+
+- Fix the metric, the pass threshold, and the guardrail metrics before testing. Pair every
+  safety metric with an over-refusal or task-completion guardrail, and report p95 or p99
+  latency and cost per successful task, not means or per-call cost.
+- Build the eval set from production-shaped traffic, over-represent edge, adversarial, and
+  ambiguous cases, tag segments, keep a held-out set that is never tuned against, and
+  refresh it from production failures. More cases of the same clean type add confidence
+  in the wrong distribution.
+- Mix grading methods: code checks for deterministic fields, a specific rubric for the
+  LLM grader validated against human labels, and humans on a sampled slice and the
+  highest-risk segment. Do not use one unvalidated judge for everything or humans for
+  everything.
+- A/B test on the same fixed set, one variable at a time, with a pre-set decision rule,
+  segment report, and enough cases to beat noise; roll out in stages with a rollback path.
+  Never use different data per arm or declare a winner from a marginal aggregate gap.
+- Diagnose with evidence by stage: correct source absent from context points to retrieval
+  or indexing; correct source present but contradicted points to prompt or grounding
+  (quoted support, an abstain path) and only then a model tier change for that stage. Fix
+  an upstream defect (for example truncated stage output) before changing a downstream
+  prompt or model.
+- Match the cost or latency lever to the failing metric: caching for a repeated prefix,
+  streaming for perceived latency (it does not cut cost), batch only for latency-tolerant
+  work, a smaller tier per validated segment, lower effort only where the eval holds.
+  Truncating needed context is never the answer.
+- Monitoring is layered: provider-level usage and cost data cannot judge answer quality;
+  per-stage request logs with a trace ID localize failures; sampled quality grading
+  (stratified, including confident-looking outputs) catches silent drift when errors,
+  latency, and token usage all look flat.
+- Treat logs as governed data: redact or reference sensitive content by ID, control
+  access, and set a retention period.
