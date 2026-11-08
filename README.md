@@ -16,8 +16,8 @@ been taken.
 
 I am now preparing for the Claude Certified Architect – Professional (CCAR-P) exam.
 Preparation started on 2026-11-01. Days 1 (RAG and retrieval), 2 (models, prompting,
-caching, context), and 3 (evaluation and optimization) are complete as concepts only.
-See the CCAR-P section below.
+caching, context), 3 (evaluation and optimization), and 4 (governance, safety, compliance)
+are complete as concepts only. See the CCAR-P section below.
 
 ## Structure
 
@@ -116,7 +116,7 @@ for it.
 | 1 | RAG and retrieval (chunking, indexing, retrieval strategy, diagnosis) | Done (concepts only, build skipped by decision) |
 | 2 | Models, prompting, caching, context | Done (concepts only, build skipped by decision) |
 | 3 | Evaluation and optimization | Done (concepts only, build skipped by decision) |
-| 4 | Governance, safety, compliance | Not started |
+| 4 | Governance, safety, compliance | Done (concepts only, build skipped by decision) |
 | 5 | Integration protocols, auth, observability | Not started |
 | 6 | Stakeholder communication and lifecycle | Not started |
 | 7 | Refresh of carried-over content | Not started |
@@ -164,6 +164,28 @@ segment, an A/B of two prompt versions, and structured per-request logging. Note
 latency guidance and the Usage and Cost Admin API were checked in current docs; the
 Evaluation Tool mechanics, tracing and OpenTelemetry specifics, and exact effort level
 names were not verified, so read their docs before building on them.
+
+**Day 4.** Worked through in notes and questions: LLM failure modes and which control
+family fits each (hallucination, direct vs indirect prompt injection, jailbreaks and
+misuse, retrieval and data failures, over-refusal, silent drift, excessive agency,
+sensitive data exposure, unreliable self-assessment), hallucination reduction (an explicit
+abstain path, quote-first grounding, evidence for claims, deterministic verification of
+checkable output such as citations), layered guardrails (capability removal, code-enforced
+action gates, input and output screening, prompt policy, monitoring) and what screening
+costs in tokens and latency, human-in-the-loop design (placement, reliable vs unreliable
+triggers, evidence and reason codes for reviewers, rubber-stamping and how to detect it,
+stratified sampling of auto-approved work), compliance as architecture (data
+minimization, erasure by stable subject ID, retention per store, access enforced in the
+data layer, redacted logs, BAA and zero data retention coverage, retention terms
+constraining model choice), and bias, fairness, and transparency (measuring by group with
+counterfactual tests, proxies, human decisions with contestability, disclosure). Not
+built: an input classifier with structured verdicts and injection test cases, a per-role
+tool allowlist, review routing with reason codes, and block and over-refusal rates by
+segment. Notes: the guardrails, hallucination, and data retention pages were checked in
+current docs. Not verified: current FedRAMP status (community sources conflict), EU data
+residency claims, the prompt-leak page, and GDPR legal specifics, which I treat as
+architectural implications and not legal advice. Check the current data retention page for
+which models and features are covered before relying on any retention or HIPAA claim.
 
 ## Design patterns I keep applying
 
@@ -317,3 +339,38 @@ names were not verified, so read their docs before building on them.
   latency, and token usage all look flat.
 - Treat logs as governed data: redact or reference sensitive content by ID, control
   access, and set a retention period.
+
+## Design patterns from CCAR-P Day 4 (governance, safety, compliance)
+
+- Name the failure mode before choosing the control. When retrieval is verified correct
+  and the model still states unsupported claims, add an abstain path and quote-first
+  grounding (plus human review for high stakes), not temperature 0, a higher top-k, a
+  larger window, or a larger model. Verify checkable output (citations, IDs, amounts)
+  deterministically in code.
+- Guardrails are layers, and strength must match the risk. Capability removal and
+  code-enforced action gates handle rules that must always hold; prompt policy is soft;
+  monitoring is detective. A rule that failed under a long conversation moves into the
+  tool's execution layer, with a human approval route for amounts over the limit.
+- Screens (input or output classifiers) are probabilistic and cost tokens and latency, and
+  an input screen adds latency in series. Use cheap deterministic checks first, fail
+  closed on classifier errors for high-risk actions, and never make a screen the only
+  barrier on an irreversible action.
+- Every blocking control has a false-positive cost. Report block and over-refusal rates by
+  segment alongside the safety metric, tune against both on a labeled set, and send
+  borderline verdicts to a secondary check instead of an automatic block.
+- Human review triggers are impact, ambiguity, and policy gaps (plus calibrated, measured
+  confidence), not stated confidence or sentiment. Give reviewers evidence and a reason
+  code, and guard against rubber-stamping with override rate, time per item, and planted
+  known-bad items. Sample auto-approved work by segment and feed confirmed errors into the
+  evaluation set.
+- Compliance changes the architecture. Minimize or pseudonymize personal data before it
+  reaches prompts and indexes, index stores and logs by a stable subject ID so erasure
+  works, set retention per store, enforce access in the retrieval or tool layer, and
+  redact logs. A BAA covers supported features only, and retention terms can constrain
+  which model is allowed. A prompt rule, a disclaimer, encryption alone, or output-only
+  redaction is not the answer.
+- Fairness is measured by group, with paired counterfactual tests on a labeled set.
+  Removing a protected attribute does not remove proxies. Consequential decisions about
+  people keep a human, with criteria and cited evidence shown, disclosure of AI
+  involvement, and a way to contest. A model's written reasoning is not proof of how it
+  decided, and an aggregate metric is not evidence of fairness.
