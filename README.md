@@ -16,8 +16,9 @@ been taken.
 
 I am now preparing for the Claude Certified Architect – Professional (CCAR-P) exam.
 Preparation started on 2026-11-01. Days 1 (RAG and retrieval), 2 (models, prompting,
-caching, context), 3 (evaluation and optimization), and 4 (governance, safety, compliance)
-are complete as concepts only. See the CCAR-P section below.
+caching, context), 3 (evaluation and optimization), 4 (governance, safety, compliance),
+and 5 (integration protocols, auth, observability) are complete as concepts only. See the
+CCAR-P section below.
 
 ## Structure
 
@@ -117,7 +118,7 @@ for it.
 | 2 | Models, prompting, caching, context | Done (concepts only, build skipped by decision) |
 | 3 | Evaluation and optimization | Done (concepts only, build skipped by decision) |
 | 4 | Governance, safety, compliance | Done (concepts only, build skipped by decision) |
-| 5 | Integration protocols, auth, observability | Not started |
+| 5 | Integration protocols, auth, observability | Done (concepts only, build skipped by decision) |
 | 6 | Stakeholder communication and lifecycle | Not started |
 | 7 | Refresh of carried-over content | Not started |
 | 8 | Mock exams and consolidation | Not started |
@@ -186,6 +187,30 @@ current docs. Not verified: current FedRAMP status (community sources conflict),
 residency claims, the prompt-leak page, and GDPR legal specifics, which I treat as
 architectural implications and not legal advice. Check the current data retention page for
 which models and features are covered before relying on any retention or HIPAA claim.
+
+**Day 5.** Worked through in notes and questions: capability bloat as an audit (map tasks
+to the minimum tools, remove what no task needs through a per-role allowlist, merge or
+sharpen overlapping tools, replace a general tool such as a shell with a narrow one),
+progressive discovery vs monolithic context (hot tools loaded, rare tools deferred behind
+a tool-search tool, discovery recall as the new failure mode, discovery as efficiency and
+not access control), choosing the integration mechanism (MCP for a capability shared by
+several consumers, a direct API or CLI tool for one narrow integration, agent-to-agent
+delegation for open-ended work owned by an independent agent), authentication and
+authorization gap analysis (identity from the verified session and not a model-supplied
+argument, permissions enforced at the tool or data layer with the user's own authority,
+credentials kept out of the model context and scoped, the acting person recorded in the
+audit trail), accuracy-latency trade-offs (start from the requirement, segment the
+traffic, route only the failing segment to a more capable configuration, validate by
+segment, batch for offline work, streaming for perceived latency only), and observability
+at scale (trace ID through every hop, per-stage spans, tags for team, workflow, and
+prompt version, sampled quality grading, sampling policy for volume, governed logs). Not
+built: a monolithic vs deferred tool-list comparison and trace IDs with per-stage spans
+on an evaluation harness. Notes: the tool search tool and the MCP connector were checked
+in current docs (the connector's availability depends on the platform). Not verified: the
+beta header and exact model support for tool search (sources conflict or are outdated),
+any Anthropic documentation of a named agent-to-agent protocol (the guide names it
+generically, so I treat it as a delegation pattern), and tracing or OpenTelemetry
+specifics. Check the current tool search and MCP connector pages before building on them.
 
 ## Design patterns I keep applying
 
@@ -374,3 +399,38 @@ which models and features are covered before relying on any retention or HIPAA c
   people keep a human, with criteria and cited evidence shown, disclosure of AI
   involvement, and a way to contest. A model's written reasoning is not proof of how it
   decided, and an aggregate metric is not evidence of fairness.
+
+## Design patterns from CCAR-P Day 5 (integration, auth, observability)
+
+- Audit capability bloat instead of only trimming it: map each task to the minimum tools,
+  remove what no task needs through a per-role allowlist (not a prompt line, a
+  confirmation, or logging), merge or sharpen overlapping tools to fix wrong-tool
+  selection, and replace a general tool such as a shell with a narrow, constrained one.
+- Keep the hot tools loaded and defer the rare ones behind a tool-search tool with clear
+  names and descriptions, then evaluate discovery recall on the rare requests. Removal is
+  for tools the role does not need, deferral for tools it needs rarely. Caching and a
+  bigger window do not fix selection accuracy or capacity, and discovery is efficiency,
+  not access control.
+- Choose the integration mechanism from the shape of the need: MCP for a capability
+  shared by several consumers with authentication and permitted operations in one place,
+  a direct API or CLI tool for one narrow fixed integration, agent-to-agent delegation for
+  open-ended work owned by an independent agent. Not MCP everywhere, and not an agent for
+  a deterministic lookup.
+- Identity comes from the verified session in code, never from a model-generated
+  argument. Enforce permissions at the tool, MCP server, or data layer with the user's own
+  authority (a per-user or on-behalf-of token), not a shared broad service account. Keep
+  credentials out of the model context, scoped and short-lived, and record the acting
+  person in the audit trail. A stronger prompt, rotation alone, or logging alone does not
+  close the gap.
+- For accuracy-latency trade-offs, start from the requirement (p95 budget, accuracy bar),
+  segment the traffic, route only the failing segment to the more capable configuration,
+  validate it on the labeled set by segment, and check the latency budget on that path.
+  Offline work can spend latency on accuracy and use batch; streaming helps perceived
+  latency only. Not the biggest model everywhere, the smallest everywhere, or truncating
+  needed context.
+- At scale, propagate a trace ID through every hop with per-stage spans (model, tokens,
+  cache use, tool, latency, outcome; large inputs by reference), tag requests by team,
+  workflow, and prompt version for spend and failure attribution, add sampled quality
+  grading by segment, compare cost per successful task around changes, and keep full
+  detail for flagged runs plus a random sample. For third-party MCP servers, instrument at
+  your own boundary. Organization-level totals cannot attribute spend or judge quality.
