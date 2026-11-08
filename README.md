@@ -17,8 +17,8 @@ been taken.
 I am now preparing for the Claude Certified Architect – Professional (CCAR-P) exam.
 Preparation started on 2026-11-01. Days 1 (RAG and retrieval), 2 (models, prompting,
 caching, context), 3 (evaluation and optimization), 4 (governance, safety, compliance),
-and 5 (integration protocols, auth, observability) are complete as concepts only. See the
-CCAR-P section below.
+5 (integration protocols, auth, observability), and 6 (stakeholder communication and
+lifecycle) are complete as concepts only. See the CCAR-P section below.
 
 ## Structure
 
@@ -119,7 +119,7 @@ for it.
 | 3 | Evaluation and optimization | Done (concepts only, build skipped by decision) |
 | 4 | Governance, safety, compliance | Done (concepts only, build skipped by decision) |
 | 5 | Integration protocols, auth, observability | Done (concepts only, build skipped by decision) |
-| 6 | Stakeholder communication and lifecycle | Not started |
+| 6 | Stakeholder communication and lifecycle | Done (concepts only, build skipped by decision) |
 | 7 | Refresh of carried-over content | Not started |
 | 8 | Mock exams and consolidation | Not started |
 
@@ -211,6 +211,26 @@ beta header and exact model support for tool search (sources conflict or are out
 any Anthropic documentation of a named agent-to-agent protocol (the guide names it
 generically, so I treat it as a delegation pattern), and tracing or OpenTelemetry
 specifics. Check the current tool search and MCP connector pages before building on them.
+
+**Day 6.** Worked through in notes and questions: structured discovery (outcome, current
+process, users, scale, data, risk, constraints, and the fit question, with real samples and
+all stakeholders consulted before any model or architecture choice), business value
+pillars (efficiency, productivity, transformation, cost, performance SLAs) evidenced with
+business metrics against a measured baseline and a guardrail metric, communicating
+trade-offs by audience (options compared on the stakeholder's own criteria with results by
+segment, a recommendation, what it gives up, the sample uncertainty, and the decision
+needed from the owner), expectation alignment and SLAs (acceptance criteria agreed before
+a phase, measured targets by segment, separating what you control from provider
+dependencies, feedback loops with owners and triage by cause), architecture documentation
+and handoff (decision records, the labeled evaluation set with thresholds, failure modes,
+runbook, safe change procedure), and lifecycle phases (discovery, design, handoff,
+monitoring, iteration, with every model, prompt, retrieval, or data change treated as a
+release). Not built: a one-page architecture decision record and a discovery question list
+for the Day 1 pipeline. Notes: the service tiers page was checked in current docs (standard
+tier, Priority Tier with a capacity commitment and a 99.5% uptime target, Batch, and the
+`service_tier` request parameter). Not verified: which models Priority Tier supports and
+whether it is open to new customers (page versions conflict), so check the current service
+tiers page before advising on it.
 
 ## Design patterns I keep applying
 
@@ -434,3 +454,48 @@ specifics. Check the current tool search and MCP connector pages before building
   grading by segment, compare cost per successful task around changes, and keep full
   detail for flagged runs plus a random sample. For third-party MCP servers, instrument at
   your own boundary. Organization-level totals cannot attribute spend or judge quality.
+
+## Design patterns from CCAR-P Day 6 (stakeholders and lifecycle)
+
+- The phase decides the action. In discovery, reduce uncertainty about the outcome, success
+  metric, baseline, data, risk, and constraints (real samples, all stakeholders, the fit
+  question) before choosing a model or building. The stakeholder owns the problem, not the
+  architecture, so do not prototype first, ask the business for a technical spec, interview
+  only the sponsor, or treat requirements as frozen.
+- Evidence business value with business metrics against a measured baseline (handling time,
+  cost per successful task including review and correction time, SLA attainment), with a
+  guardrail metric on any pillar you push. Token counts, public benchmarks, total or
+  per-call spend, throughput alone, and a vendor case study are not the business case.
+- Communicate a decision by audience: the same facts framed for each reader, with options
+  compared on the stakeholder's own criteria using results by segment, a recommendation,
+  what it gives up, the sample uncertainty, and the decision needed from the owner.
+  Mechanism goes to engineers or an appendix. Do not present one option, hide a segment
+  gap, or make a business-owned trade-off silently inside the architecture.
+- Commitments are measured, segmented, and limited to what you control. Agree acceptance
+  criteria in writing before a phase (threshold by segment, sample size, critical error
+  types, abstain and review cases). A provider's uptime target is an input, not your SLA,
+  so build retry, fallback, and a human-review degraded mode. Do not promise zero errors,
+  one aggregate accuracy number, or a number before measuring, and do not drop accuracy
+  from the agreement because output is probabilistic.
+- Run feedback loops with owners: triage each item by cause (requirement gap, retrieval,
+  prompt, model, data), add confirmed failures to the evaluation set, test fixes on the
+  fixed set before release, and tell stakeholders what changed and its measured effect. Do
+  not edit the prompt after each complaint or suppress feedback.
+- Documentation carries what code cannot: decision records (context, alternatives,
+  consequences), the labeled evaluation set with metrics and thresholds by segment, failure
+  modes and limitations, and a runbook (alerts, stage diagnosis, index refresh, safe change
+  procedure, owners and escalation). The prompt alone, a what-without-why component list,
+  raw transcripts, and meeting recordings are not documentation.
+- Go-live is not the end. A handoff needs the evaluation baseline in the shared repository,
+  named owners with a backup, versioned configuration under change control, and a tested
+  rollback. Every change to a model, prompt, retrieval setting, or data source is a
+  release: fixed-set evaluation by segment with guardrail metrics and cost per successful
+  task, a staged rollout with rollback criteria, and stakeholder notice. A new input type
+  that arrives after launch becomes a new evaluation segment, and flat error, latency, and
+  token dashboards do not rule out quality drift, so grade samples by segment.
+- In cost conversations, separate usage growth from per-task efficiency using cost per
+  successful task against the baseline, then match levers to the cost drivers in the logs
+  (caching for a repeated prefix, a smaller tier only for validated segments, batch for
+  latency-tolerant work). State each lever's saving and its accuracy and latency risk,
+  recommend one, and ask the owner to decide. Do not switch everything to the smallest tier
+  or promise a percentage up front.
